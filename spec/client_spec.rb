@@ -158,7 +158,7 @@ describe "Client" do
         link     = authenticated_client.shorten_link("http://example.com")
         response = authenticated_client.delete_drop(link["code"])
 
-        response.status.should == 200
+        response[:success].should == true
       end
 
     end

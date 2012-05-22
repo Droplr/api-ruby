@@ -58,11 +58,13 @@ module Droplr
 
     def delete_drop(code)
       response = Droplr::Service.delete_drop(code)
+
+      handle_header_response(response)
     end
 
   private
 
-    def handle_header_response(response, allowed_headers)
+    def handle_header_response(response, allowed_headers = nil)
       # TODO : handle 204s, etc.
       if is_success(response)
         Droplr::Parser.parse_success_headers(response.headers, allowed_headers)

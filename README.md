@@ -52,6 +52,17 @@ The following are available actions:
 
 -----
 
+#### Errors
+
+If you get an error from a call, you'll receive a hash that looks like the following:
+
+    {:errorcode    => "DeleteDrop.NoDrop",
+     :errordetails => "No such drop"}
+
+Which you can then pass along to your users.
+
+-----
+
 #### Read Account Details
 
 Example call:
@@ -273,12 +284,8 @@ Example call:
 
 Accepts a string that is the code of the drop to be deleted.
 
-Param details:
+Expected:
 
-* A filename in the options hash is required.
+    {:success => true}
 
-Expected response (TODO : update this with a real response):
-
-    "TODO"
-
-TODO : what does this return?
+Nothing fancy here, just check for success.

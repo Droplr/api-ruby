@@ -2,11 +2,18 @@ module Droplr
   module Parser
     extend self
 
-    def parse_success_headers(headers, allowed_fields)
-      allowed_fields.each_with_object({}) do |field, hash|
-        header      = headers["x-droplr-#{field}"]
-        next if header.nil?
-        hash[field] = header
+    def parse_success_headers(headers, allowed_fields = nil)
+
+      if allowed_fields
+        allowed_fields.each_with_object({}) do |field, hash|
+          header      = headers["x-droplr-#{field}"]
+          next if header.nil?
+          hash[field] = header
+        end
+      else
+        {
+          :success => true
+        }
       end
     end
 
