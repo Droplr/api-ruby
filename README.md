@@ -39,6 +39,17 @@ You'll only need to set `use_production` if your application is currently in its
 
 ### Actions
 
+The following are available actions:
+
+* [Read Account Details]("#read-account-details")
+* [Edit Account Details]("#edit-account-details")
+* [List Drops]("#list-drops")
+* [Read Drop]("#read-drop")
+* [Shorten Link]("#shorten-link")
+* [Create Note]("#create-note")
+* [Upload File]("#upload-file")
+* [Delete Drop]("#delete-drop")
+
 #### Read Account Details
 
 Example call:
