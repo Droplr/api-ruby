@@ -231,7 +231,7 @@ Returns an object representing the created note. Each object will contain: code,
 
 #### Upload File
 
-Example call (TODO : update this with a real response):
+Example call:
 
     path          = File.expand_path(File.dirname(__FILE__) + '/fixtures/droplr-logo.png')
     content_type  = `file --mime -b #{path}`.gsub(/;.*$/, "").chomp
@@ -248,20 +248,20 @@ Param details:
 
 * A filename in the options hash is required.
 
-Expected response (TODO : update this with a real response):
+Expected response:
 
-    {"code"        => "xkcd",
-     "createdat"   => "1337689077179",
-     "type"        => "NOTE",
-     "title"       => "dGVzdGluZyBhIG5vdGUgZHJvcA==",
-     "size"        => "19",
-     "privacy"     => "PRIVATE",
-     "password"    => "2f7gGaCQ",
-     "obscurecode" => "1BnZtKfssD4KaLyV",
-     "shortlink"   => "http://d.pr/n/xkcd",
-     "usedspace"   => "4051609",
-     "totalspace"  => "107374182400",
-     "variant"     => "markdown"}
+    {"code"       => "xkcd",
+    "createdat"   => "1337693881277",
+    "type"        => "IMAGE",
+    "title"       => "77+977+977+977+977+9Xu+/vQ==",
+    "size"        => "4651",
+    "privacy"     => "PRIVATE",
+    "password"    => "dKUhRaro",
+    "obscurecode" => "1bshZ6IFDC7d3QcF",
+    "shortlink"   => "http://d.pr/i/xkcd",
+    "usedspace"   => "4065713",
+    "totalspace"  => "107374182400",
+    "variant"     => "image/png"}
 
 Returns an object representing the created drop. Each object will contain: code, createdat, type, title, size, privacy, password (only if privacy was set to "PRIVATE"), obscurecode, shortlink, usedspace, totalspace, variant.
 

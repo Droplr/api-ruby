@@ -52,7 +52,7 @@ module Droplr
 
     def upload_file(contents, options = {})
       response = Droplr::Service.upload_file(contents, options)
-      puts response.inspect
+
       handle_header_response(response, Droplr::Configuration::CREATE_DROP_WITH_VARIANT_FIELDS)
     end
 
