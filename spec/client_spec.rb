@@ -5,8 +5,8 @@ describe "Client" do
   # TODO : stop using real credentials here, and stop uploading drops all the time. stub stuff.
   let(:authenticated_client){
     Droplr::Client.new({
-      :token           => "user_1@droplr.com",
-      :secret          => OpenSSL::Digest::SHA1.hexdigest("pass_1"),
+      :token           => "user_2@droplr.com",
+      :secret          => OpenSSL::Digest::SHA1.hexdigest("pass_2"),
       :use_production  => false,
       :app_public_key  => "app_0_publickey",
       :app_private_key => "app_0_privatekey",
@@ -130,21 +130,24 @@ describe "Client" do
     context "Uploading a file" do
 
       it "returns the uploaded file drop" do
-        pending "pass in a file and actually do this"
-        # response = authenticated_client.upload_file(file)
+        path          = File.expand_path(File.dirname(__FILE__) + '/fixtures/droplr-logo.png')
+        # TODO : pretty sure this is a hack that can't be depended on
+        content_type  = `file --mime -b #{path}`.gsub(/;.*$/, "").chomp
+        file          = File.open(path, "rb")
+        response      = authenticated_client.upload_file(file.read, {:filename => "A Sample File", :content_type => content_type})
 
-        # response.should_not be_nil
-        # response["code"].should_not be_nil
-        # response["createdat"].should_not be_nil
-        # response["type"].should_not be_nil
-        # response["title"].should_not be_nil
-        # response["size"].should_not be_nil
-        # response["privacy"].should_not be_nil
-        # response["password"].should_not be_nil
-        # response["obscurecode"].should_not be_nil
-        # response["shortlink"].should_not be_nil
-        # response["usedspace"].should_not be_nil
-        # response["totalspace"].should_not be_nil
+        response.should_not be_nil
+        response["code"].should_not be_nil
+        response["createdat"].should_not be_nil
+        response["type"].should_not be_nil
+        response["title"].should_not be_nil
+        response["size"].should_not be_nil
+        response["privacy"].should_not be_nil
+        response["password"].should_not be_nil
+        response["obscurecode"].should_not be_nil
+        response["shortlink"].should_not be_nil
+        response["usedspace"].should_not be_nil
+        response["totalspace"].should_not be_nil
       end
 
     end

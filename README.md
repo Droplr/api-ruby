@@ -50,6 +50,8 @@ The following are available actions:
 * [Upload File](#upload-file)
 * [Delete Drop](#delete-drop)
 
+-----
+
 #### Read Account Details
 
 Example call:
@@ -231,7 +233,14 @@ Returns an object representing the created note. Each object will contain: code,
 
 Example call (TODO : update this with a real response):
 
-    droplr.upload_file("binary_file_string", {:filename => "My Awesome File"})
+    path          = File.expand_path(File.dirname(__FILE__) + '/fixtures/droplr-logo.png')
+    content_type  = `file --mime -b #{path}`.gsub(/;.*$/, "").chomp
+    file          = File.open(path, "rb")
+
+    droplr.upload_file(file, {
+      :content_type => content_type,
+      :filename     => "My Awesome File"
+    })
 
 Accepts binary data for a file to be created and an options hash.
 

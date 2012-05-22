@@ -66,7 +66,7 @@ module Droplr
         # TODO : should i set a default filename or content_type? should i catch errors is if they aren't set?
         base_request.post do |req|
           req.url Droplr::Configuration::FILES_ENDPOINT
-          set_base_headers(req, {:content_type => drop_options[:content_type]})
+          set_base_headers(req, drop_options)
           req.headers["x-droplr-filename"] = drop_options[:filename]
           req.headers["Content-Type"]      = drop_options[:content_type]
           req.body                         = contents
