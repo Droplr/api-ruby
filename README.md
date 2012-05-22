@@ -16,13 +16,9 @@ Or install it yourself as:
 
     $ gem install droplr
 
------
-
 ## Usage
 
 For more detailed documentation on the Droplr API, including instructions on requesting a key for your application, please see [TODO](http://example.com/addlink).
-
------
 
 ### Initialization
 
@@ -49,6 +45,8 @@ Example call:
 
     droplr.read_account_details
 
+Expected response:
+
     {"id"              => "user_id",
      "createdat"       => "1323892487389",
      "subscriptionend" => "1355428487313",
@@ -64,8 +62,6 @@ Example call:
      "dropcount"       => "65",
      "maxuploadsize"   => "1073741824",
      "totalspace"      => "107374182400"}
-
-Expected response:
 
 Returns an object representing the user in question. The response fields are: id, createdat, subscriptionend (only present if type is "PRO"), type, extraspace, usedspace, email, usedomain, domain (only if usedomain is set), rootredirect, userootredirect, dropprivacy, activedrops, dropcount, maxuploadsize, totalspace.
 
@@ -266,5 +262,3 @@ Expected response (TODO : update this with a real response):
     "TODO"
 
 TODO : what does this return?
-
-------
