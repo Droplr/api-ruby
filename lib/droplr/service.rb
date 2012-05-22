@@ -25,10 +25,10 @@ module Droplr
         end
       end
 
-      def read_drop(code, request_options)
+      def read_drop(code)
         base_request.get do |req|
           req.url "#{Droplr::Configuration::DROPS_ENDPOINT}/#{code}"
-          set_base_headers(req, request_options)
+          set_base_headers(req)
           req.headers["Content-Type"] = ""
         end
       end
@@ -84,7 +84,6 @@ module Droplr
     private
 
       def set_base_headers(request, options = nil)
-        binding.pry
         # date header must be set first so our auth_header method can introspect
         # the request in order to find the date it should sign itself with
         request.headers["Date"]          = (Time.now.to_i * 1000).to_s

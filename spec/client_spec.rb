@@ -2,8 +2,9 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "Client" do
 
+  # TODO : stop using real credentials here, and stop uploading drops all the time. stub stuff.
   let(:authenticated_client){
-      Droplr::Client.new({
+    Droplr::Client.new({
       :token           => "user_1@droplr.com",
       :secret          => OpenSSL::Digest::SHA1.hexdigest("pass_1"),
       :use_production  => false,
@@ -64,25 +65,6 @@ describe "Client" do
         response["shortlink"].should_not be_nil
       end
 
-      it "reads an uploaded drop anonymously" do
-        link     = authenticated_client.shorten_link("http://example.com")
-        response = authenticated_client.read_drop(link["code"], {:use_anonymous => true})
-
-        response.should_not be_nil
-        response["code"].should_not be_nil
-        response["createdat"].should_not be_nil
-        response["type"].should_not be_nil
-        response["title"].should_not be_nil
-        response["views"].should_not be_nil
-        response["lastaccess"].should_not be_nil
-        response["size"].should_not be_nil
-        response["filecreatedat"].should_not be_nil
-        response["privacy"].should_not be_nil
-        response["password"].should_not be_nil
-        response["obscurecode"].should_not be_nil
-        response["shortlink"].should_not be_nil
-      end
-
     end
 
     context "Shortening a link" do
@@ -115,16 +97,14 @@ describe "Client" do
         response["code"].should_not be_nil
         response["createdat"].should_not be_nil
         response["type"].should_not be_nil
+        response["variant"].should == "plain"
         response["title"].should_not be_nil
         response["size"].should_not be_nil
         response["privacy"].should_not be_nil
-        response["password"].should_not be_nil
         response["obscurecode"].should_not be_nil
         response["shortlink"].should_not be_nil
         response["usedspace"].should_not be_nil
         response["totalspace"].should_not be_nil
-
-        response["variant"].should == "plain"
       end
 
       it "can create a markdown drop" do

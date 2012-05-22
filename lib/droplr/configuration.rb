@@ -25,7 +25,7 @@ module Droplr
     READ_ACCOUNT_FIELDS             = %w(id createdat subscriptionend type extraspace usedspace email usedomain rootredirect userootredirect dropprivacy activedrops dropcount maxuploadsize totalspace)
     CREATE_DROP_FIELDS              = %w(code createdat type title size privacy password obscurecode shortlink usedspace totalspace)
     CREATE_DROP_WITH_VARIANT_FIELDS = CREATE_DROP_FIELDS << "variant"
-    READ_DROP_FIELDS                = %w(code createdat type variant title views lastaccess size filecreatedat privacy password obscurecode shortlink)
+    READ_DROP_FIELDS                = %w(code createdat type variant title views lastaccess size privacy password obscurecode shortlink)
     LIST_DROPS_PARAMS               = %w(offset amount type sortBy order since until)
 
     def initialize(options)
@@ -33,6 +33,16 @@ module Droplr
       options.each do |key, value|
         self.send "#{key}=", value
       end
+    end
+
+    # implement our own attr_accessor_with_default setup here so we can fall back
+    # to anonymous credentials
+    def use_production
+      @use_production ||= @use_production.nil? ? true : @use_production
+    end
+
+    def use_production=(value)
+      @use_production = value
     end
 
     def base_url

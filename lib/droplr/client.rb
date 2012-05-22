@@ -32,8 +32,8 @@ module Droplr
       handle_json_response(response)
     end
 
-    def read_drop(code, options = {})
-      response = Droplr::Service.read_drop(code, options)
+    def read_drop(code)
+      response = Droplr::Service.read_drop(code)
 
       handle_header_response(response, Droplr::Configuration::READ_DROP_FIELDS)
     end
