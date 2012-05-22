@@ -143,13 +143,13 @@ Returns an array of objects representing the retrieved drops. Each object will c
 
 Example call:
 
-    droplr.read_drop("ouIn")
+    droplr.read_drop("xkcd")
 
 Accepts a string that is the short code of a drop to read.
 
 Expected response:
 
-    {"code"        => "82hj",
+    {"code"        => "xkcd",
      "createdat"   => "1337689077179",
      "type"        => "NOTE",
      "variant"     => "plain",
@@ -160,7 +160,7 @@ Expected response:
      "privacy"     => "PRIVATE",
      "password"    => "2f7gGaCQ",
      "obscurecode" => "1BnZtKfssD4KaLyV",
-     "shortlink"   => "http://d.pr/n/82hj"}
+     "shortlink"   => "http://d.pr/n/xkcd"}
 
 Returns an object representing the retrieved drop. Each object will contain: code, createdat, type, variant, title, views, lastaccess, size, privacy, password, obscurecode, shortlink.
 
@@ -174,7 +174,7 @@ Accepts a string that is the URL to be shortened.
 
 Expected response:
 
-    {"code"        => "ouIn",
+    {"code"        => "xkcd",
      "createdat"   => "1337689253816",
      "type"        => "LINK",
      "title"       => "aHR0cDovL2V4YW1wbGUuY29t",
@@ -182,7 +182,7 @@ Expected response:
      "privacy"     => "PRIVATE",
      "password"    => "3J4RuxXV",
      "obscurecode" => "uZzrulunwsOprz5Z",
-     "shortlink"   => "http://d.pr/ouIn",
+     "shortlink"   => "http://d.pr/xkcd",
      "usedspace"   => "4051627",
      "totalspace"  => "107374182400"}
 
@@ -205,7 +205,7 @@ Param details:
 
 Expected response:
 
-    {"code"        => "u7y6",
+    {"code"        => "xkcd",
      "createdat"   => "1337689077179",
      "type"        => "NOTE",
      "title"       => "dGVzdGluZyBhIG5vdGUgZHJvcA==",
@@ -213,7 +213,7 @@ Expected response:
      "privacy"     => "PRIVATE",
      "password"    => "2f7gGaCQ",
      "obscurecode" => "1BnZtKfssD4KaLyV",
-     "shortlink"   => "http://d.pr/n/u7y6",
+     "shortlink"   => "http://d.pr/n/xkcd",
      "usedspace"   => "4051609",
      "totalspace"  => "107374182400",
      "variant"     => "markdown"}
@@ -234,7 +234,7 @@ Param details:
 
 Expected response (TODO : update this with a real response):
 
-    {"code"        => "u7y6",
+    {"code"        => "xkcd",
      "createdat"   => "1337689077179",
      "type"        => "NOTE",
      "title"       => "dGVzdGluZyBhIG5vdGUgZHJvcA==",
@@ -242,7 +242,7 @@ Expected response (TODO : update this with a real response):
      "privacy"     => "PRIVATE",
      "password"    => "2f7gGaCQ",
      "obscurecode" => "1BnZtKfssD4KaLyV",
-     "shortlink"   => "http://d.pr/n/u7y6",
+     "shortlink"   => "http://d.pr/n/xkcd",
      "usedspace"   => "4051609",
      "totalspace"  => "107374182400",
      "variant"     => "markdown"}
@@ -268,6 +268,3 @@ Expected response (TODO : update this with a real response):
 TODO : what does this return?
 
 ------
-
-## Contributing
-
