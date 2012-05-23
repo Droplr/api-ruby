@@ -9,7 +9,10 @@ require "json"
 require "base64"
 require "openssl"
 require "faraday"
+require "uri"
 
 module Droplr
-  # Your code goes here...
+  class DroplrError < StandardError; end
+  class DroplrConfigurationError < StandardError; end
+  class DroplrRequestError < StandardError; end
 end

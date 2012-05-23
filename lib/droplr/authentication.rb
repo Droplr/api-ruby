@@ -11,7 +11,6 @@ module Droplr
 
     def auth_signature(req, options = nil)
       key_and_secret = "#{configuration.app_private_key}:#{configuration.secret}"
-      # TODO : is it safe to assume options[:content_type] will exist if options does?
       string_to_sign = "#{req.method.to_s.upcase} #{req.path} HTTP/1.1\n#{options[:content_type] if options}\n#{req.headers['Date']}"
       hmac_result    = OpenSSL::HMAC.new(key_and_secret, 'sha1').update(string_to_sign).digest
 

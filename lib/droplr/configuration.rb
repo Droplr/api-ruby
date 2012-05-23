@@ -3,10 +3,6 @@ module Droplr
 
     attr_accessor :token, :secret, :use_production, :app_public_key, :app_private_key, :user_agent
 
-    # fallback credentials
-    ANONYMOUS_TOKEN                 = "anonymous@droplr.com"
-    ANONYMOUS_SECRET                = OpenSSL::Digest::SHA1.hexdigest("anonymous")
-
     # basic client configuration
     DROPLR_PRODUCTION_SERVER_PORT   = 443
     DROPLR_DEV_SERVER_PORT          = 8069
@@ -20,16 +16,16 @@ module Droplr
     NOTES_ENDPOINT                  = "/notes"
     FILES_ENDPOINT                  = "/files"
 
-    # allowed fields
+    # allowed values
     EDIT_ACCOUNT_FIELDS             = %w(password theme usedomain domain userootredirect rootredirect dropprivacy)
     READ_ACCOUNT_FIELDS             = %w(id createdat type subscriptionend maxuploadsize extraspace usedspace totalspace email usedomain domain userootredirect rootredirect dropprivacy theme dropcount)
     CREATE_DROP_FIELDS              = %w(code createdat type title size privacy password obscurecode shortlink usedspace totalspace)
     CREATE_DROP_WITH_VARIANT_FIELDS = CREATE_DROP_FIELDS << "variant"
     READ_DROP_FIELDS                = %w(code createdat type variant title views lastaccess size privacy password obscurecode shortlink)
     LIST_DROPS_PARAMS               = %w(offset amount type sortBy order since until)
+    NOTE_VARIANTS                   = %w(markdown textile code plain)
 
     def initialize(options)
-      # TODO : throw exceptions if required fields are not present
       options.each do |key, value|
         self.send "#{key}=", value
       end

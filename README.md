@@ -221,7 +221,7 @@ Accepts a string that is the note to be created, an a hash, which may optionally
 Param details:
 
 * `variant` expects "plain", "code", "textile", or "markdown"
-* `variant` default to "plain"
+* `variant` defaults to "plain"
 
 Expected response:
 
@@ -258,6 +258,7 @@ Accepts binary data for a file to be created and an options hash.
 Param details:
 
 * A filename in the options hash is required.
+* A content type is required and should be the file's MIME type.
 
 Expected response:
 
