@@ -21,9 +21,28 @@ module Droplr
     READ_ACCOUNT_FIELDS             = %w(id createdat type subscriptionend maxuploadsize extraspace usedspace totalspace email usedomain domain userootredirect rootredirect dropprivacy theme dropcount)
     CREATE_DROP_FIELDS              = %w(code createdat type title size privacy password obscurecode shortlink usedspace totalspace)
     CREATE_DROP_WITH_VARIANT_FIELDS = CREATE_DROP_FIELDS << "variant"
-    READ_DROP_FIELDS                = %w(code createdat type variant title views lastaccess size privacy password obscurecode shortlink)
+    READ_DROP_FIELDS                = %w(code createdat type title size privacy password obscurecode shortlink variant views lastaccess)
     LIST_DROPS_PARAMS               = %w(offset amount type sortBy order since until)
     NOTE_VARIANTS                   = %w(markdown textile code plain)
+
+    # some converting to stay inline with ruby conventions
+    UNDERSCORED_FIELDS              = {
+      "createdat"       => "created_at",
+      "customerid"      => "customer_id",
+      "dropcount"       => "drop_count",
+      "dropprivacy"     => "drop_privacy",
+      "extraspace"      => "extra_space",
+      "lastaccess"      => "last_access",
+      "maxuploadsize"   => "max_upload_size",
+      "obscurecode"     => "obscure_code",
+      "rootredirect"    => "root_redirect",
+      "shortlink"       => "short_link",
+      "subscriptionend" => "subscription_end",
+      "totalspace"      => "total_space",
+      "usedomain"       => "use_domain",
+      "usedspace"       => "used_space",
+      "userootredirect" => "use_root_redirect",
+    }
 
     def initialize(options)
       options.each do |key, value|

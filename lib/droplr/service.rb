@@ -42,7 +42,6 @@ module Droplr
           req.headers["Content-Type"] = "application/json"
 
           set_base_headers(req, {:content_type => "application/json"})
-          set_json_request_headers(req)
         end
       end
 
@@ -87,6 +86,10 @@ module Droplr
         end
       end
 
+      def base_request
+        @base_request ||= Faraday.new({:url => configuration.base_url})
+      end
+
     private
 
       def set_base_headers(request, options = nil)
@@ -97,16 +100,13 @@ module Droplr
         request.headers["User-Agent"]    = configuration.user_agent
       end
 
-      def build_query_strings_for_options(url, options)
+      def build_query_strings_for_options(url, options = nil)
+        return url unless options && options.any?
         query_strings = options.map do |key, value|
           "#{CGI.escape(key.to_s)}=#{CGI.escape(value.to_s)}"
         end
 
         "#{url}?#{query_strings.join('&')}"
-      end
-
-      def base_request
-        @base_request ||= Faraday.new({:url => configuration.base_url})
       end
 
     end
