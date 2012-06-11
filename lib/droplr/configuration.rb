@@ -26,7 +26,7 @@ module Droplr
     NOTE_VARIANTS                   = %w(markdown textile code plain)
 
     # some converting to stay inline with ruby conventions
-    UNDERSCORED_FIELDS              = {
+    CAMEL_TO_UNDERSCORE_FIELDS      = {
       "createdat"       => "created_at",
       "customerid"      => "customer_id",
       "dropcount"       => "drop_count",
@@ -43,6 +43,8 @@ module Droplr
       "usedspace"       => "used_space",
       "userootredirect" => "use_root_redirect",
     }
+
+    UNDERSCORE_TO_CAMEL_FIELDS      = CAMEL_TO_UNDERSCORE_FIELDS.invert
 
     def initialize(options)
       options.each do |key, value|

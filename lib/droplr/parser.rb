@@ -9,7 +9,7 @@ module Droplr
         base_hash = {object_key => {}}
         success_hash = allowed_fields.each_with_object(base_hash) do |field, hash|
           header                  = headers["x-droplr-#{field}"]
-          underscore_lookup       = Droplr::Configuration::UNDERSCORED_FIELDS
+          underscore_lookup       = Droplr::Configuration::CAMEL_TO_UNDERSCORE_FIELDS
           field                   = underscore_lookup[field] || field
 
           next if header.nil?
@@ -26,7 +26,8 @@ module Droplr
     end
 
     def parse_success_json(response, object_key)
-      success_hash = {object_key => JSON.parse(response.body)}
+      parsed_body  = response.body ? JSON.parse(response.body) : nil
+      success_hash = {object_key => parsed_body}
       success_hash.merge({:request => {:status => response.status}})
     end
 

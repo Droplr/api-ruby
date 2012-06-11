@@ -19,6 +19,7 @@ module Droplr
     end
 
     def edit_account_details(options = {})
+      options = camelized_params(options)
       check_for_empty_params(options, "You must provide at least one account field to update.")
       check_for_invalid_params(options, Droplr::Configuration::EDIT_ACCOUNT_FIELDS)
 
@@ -27,6 +28,7 @@ module Droplr
     end
 
     def list_drops(options = {})
+      options = camelized_params(options)
       check_for_invalid_params(options, Droplr::Configuration::LIST_DROPS_PARAMS)
 
       response = Droplr::Service.list_drops(options)
@@ -148,6 +150,15 @@ module Droplr
       if (url =~ URI::regexp).nil?
         message = "The link you're trying to shorten appears to be invalid."
         raise Droplr::RequestError.new(message)
+      end
+    end
+
+    def camelized_params(params)
+      params.each do |key, value|
+        if new_key = Droplr::Configuration::CAMEL_TO_UNDERSCORE_FIELDS[key.to_s]
+          params[key].delete
+          params[new_key.to_sym] = value
+        end
       end
     end
 
