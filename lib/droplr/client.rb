@@ -132,8 +132,9 @@ module Droplr
 
     def check_for_invalid_params(params, allowed_params, message = nil)
       params.each do |key, value|
-        unless allowed_params.include?(key.to_s)
-          message = message || "Invalid parameter supplied for request: #{key}"
+        converted_key = Droplr::Configuration::UNDERSCORE_TO_CAMEL_FIELDS[key.to_s] || key.to_s
+        unless allowed_params.include?(converted_key)
+          message = message || "Invalid parameter supplied for request: #{converted_key}"
           raise Droplr::RequestError.new(message)
         end
       end
@@ -154,12 +155,14 @@ module Droplr
     end
 
     def camelized_params(params)
+      converted_params = {}
+
       params.each do |key, value|
-        if new_key = Droplr::Configuration::CAMEL_TO_UNDERSCORE_FIELDS[key.to_s]
-          params[key].delete
-          params[new_key.to_sym] = value
-        end
+        new_key = Droplr::Configuration::UNDERSCORE_TO_CAMEL_FIELDS[key.to_s] || key
+        converted_params[new_key] = value
       end
+
+      converted_params
     end
 
   end

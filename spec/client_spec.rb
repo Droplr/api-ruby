@@ -133,6 +133,15 @@ describe "Client" do
         response[:drops].length.should == 10
       end
 
+      it "sorts drops by ascending name" do
+        response = authenticated_client.list_drops({:sort_by => "title", :order => "asc"})
+
+        response.should_not be_nil
+        Droplr::Client.was_successful(response).should == true
+
+        response[:drops].length.should == 10
+      end
+
     end
 
     context "Shortening a link" do

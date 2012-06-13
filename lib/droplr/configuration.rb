@@ -37,11 +37,12 @@ module Droplr
       "obscurecode"     => "obscure_code",
       "rootredirect"    => "root_redirect",
       "shortlink"       => "short_link",
+      "sortBy"          => "sort_by",
       "subscriptionend" => "subscription_end",
       "totalspace"      => "total_space",
       "usedomain"       => "use_domain",
       "usedspace"       => "used_space",
-      "userootredirect" => "use_root_redirect",
+      "userootredirect" => "use_root_redirect"
     }
 
     UNDERSCORE_TO_CAMEL_FIELDS      = CAMEL_TO_UNDERSCORE_FIELDS.invert
