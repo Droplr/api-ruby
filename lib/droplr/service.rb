@@ -93,13 +93,13 @@ module Droplr
     private
 
       def set_base_headers(request, options = nil)
-        # date header must be set first so our auth_header method can introspect
+        # date header must be set first so our authentication_header method can introspect
         # the request in order to find the date it should sign itself with
         request.headers["Date"]          = (Time.now.to_i * 1000).to_s
         request.headers["User-Agent"]    = configuration.user_agent
 
         auth_options                     = auth_options_from_request(request, options)
-        request.headers["Authorization"] = auth_header(auth_options)
+        request.headers["Authorization"] = authentication_header(auth_options)
       end
 
       def auth_options_from_request(request, options)
