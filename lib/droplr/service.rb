@@ -20,6 +20,7 @@ module Droplr
       def edit_account_details(account_options)
         base_request.put do |req|
           req.url Droplr::Configuration::ACCOUNT_ENDPOINT
+          # TODO : why does this request fail if this is not set?
           req.headers["Content-Type"] = ""
 
           set_base_headers(req)
@@ -30,7 +31,6 @@ module Droplr
       def read_drop(code)
         base_request.get do |req|
           req.url "#{Droplr::Configuration::DROPS_ENDPOINT}/#{code}"
-          req.headers["Content-Type"] = ""
 
           set_base_headers(req)
         end
@@ -41,7 +41,7 @@ module Droplr
           req.url build_query_strings_for_options("#{Droplr::Configuration::DROPS_ENDPOINT}.json", drop_options)
           req.headers["Content-Type"] = "application/json"
 
-          set_base_headers(req, {:content_type => "application/json"})
+          set_base_headers(req)
         end
       end
 
@@ -50,8 +50,8 @@ module Droplr
           req.url Droplr::Configuration::LINKS_ENDPOINT
           req.headers["Content-Type"] = "text/plain"
 
-          set_base_headers(req, {:content_type => "text/plain"})
-          req.body                    = link
+          set_base_headers(req)
+          req.body = link
         end
       end
 
@@ -61,8 +61,8 @@ module Droplr
           req.url Droplr::Configuration::NOTES_ENDPOINT
           req.headers["Content-Type"] = content_type
 
-          set_base_headers(req, {:content_type => content_type})
-          req.body                    = contents
+          set_base_headers(req)
+          req.body = contents
         end
       end
 
@@ -80,7 +80,6 @@ module Droplr
       def delete_drop(code)
         base_request.delete do |req|
           req.url "#{Droplr::Configuration::DROPS_ENDPOINT}/#{code}"
-          req.headers["Content-Type"] = ""
 
           set_base_headers(req)
         end
@@ -92,7 +91,7 @@ module Droplr
 
     private
 
-      def set_base_headers(request, options = nil)
+      def set_base_headers(request, options = {})
         # date header must be set first so our authentication_header method can introspect
         # the request in order to find the date it should sign itself with
         request.headers["Date"]          = (Time.now.to_i * 1000).to_s
@@ -107,7 +106,7 @@ module Droplr
           :method       => request.method.to_s,
           :path         => request.path,
           :date         => request.headers["Date"],
-          :content_type => options ? options[:content_type] : nil
+          :content_type => options[:content_type] || request.headers["Content-Type"] || ""
         }
       end
 
