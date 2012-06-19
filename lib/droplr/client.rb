@@ -15,6 +15,7 @@ module Droplr
 
     def read_account_details
       response = Droplr::Service.read_account_details
+
       handle_header_response(response, :account, Droplr::Configuration::READ_ACCOUNT_FIELDS)
     end
 

@@ -25,6 +25,10 @@ module Droplr
     LIST_DROPS_PARAMS               = %w(offset amount type sortBy order since until)
     NOTE_VARIANTS                   = %w(markdown textile code plain)
 
+    # fields that need conversion in our parser when passed as a string
+    INTEGER_FIELDS = %w(created_at subscription_end max_upload_size extra_space used_space total_space drop_count)
+    BOOLEAN_FIELDS = %w(use_domain use_root_redirect)
+
     # some converting to stay inline with ruby conventions
     CAMEL_TO_UNDERSCORE_FIELDS      = {
       "createdat"       => "created_at",

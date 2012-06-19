@@ -52,19 +52,19 @@ describe "Client" do
         Droplr::Client.was_successful(response).should == true
 
         response[:account][:id].should_not be_nil
-        response[:account][:created_at].should_not be_nil
+        response[:account][:created_at].should be_an(Integer)
         response[:account][:type].should_not be_nil
-        response[:account][:subscription_end].should_not be_nil
-        response[:account][:max_upload_size].should_not be_nil
-        response[:account][:extra_space].should_not be_nil
-        response[:account][:used_space].should_not be_nil
-        response[:account][:total_space].should_not be_nil
+        response[:account][:subscription_end].should be_an(Integer)
+        response[:account][:max_upload_size].should be_an(Integer)
+        response[:account][:extra_space].should be_an(Integer)
+        response[:account][:used_space].should be_an(Integer)
+        response[:account][:total_space].should be_an(Integer)
         response[:account][:email].should_not be_nil
-        response[:account][:use_domain].should_not be_nil
-        response[:account][:use_root_redirect].should_not be_nil
+        response[:account][:use_domain].should satisfy {|f| [true, false].include?(f) }
+        response[:account][:use_root_redirect].should satisfy {|f| [true, false].include?(f) }
         response[:account][:drop_privacy].should_not be_nil
         response[:account][:theme].should_not be_nil
-        response[:account][:drop_count].should_not be_nil
+        response[:account][:drop_count].should be_an(Integer)
       end
 
     end
