@@ -109,7 +109,7 @@ describe "Client" do
         response[:drop][:privacy].should_not be_nil
         response[:drop][:password].should_not be_nil
         response[:drop][:obscure_code].should_not be_nil
-        response[:drop][:short_link].should_not be_nil
+        response[:drop][:shortlink].should_not be_nil
 
         authenticated_client.delete_drop(link[:drop][:code])
       end
@@ -131,6 +131,7 @@ describe "Client" do
         Droplr::Client.was_successful(response).should == true
 
         response[:drops].length.should == 10
+        response[:drops][0][:obscure_code].should_not be_nil
       end
 
       it "sorts drops by ascending name" do
@@ -160,7 +161,7 @@ describe "Client" do
         response[:drop][:privacy].should_not be_nil
         response[:drop][:password].should_not be_nil
         response[:drop][:obscure_code].should_not be_nil
-        response[:drop][:short_link].should_not be_nil
+        response[:drop][:shortlink].should_not be_nil
         response[:drop][:used_space].should_not be_nil
         response[:drop][:total_space].should_not be_nil
 
@@ -196,7 +197,7 @@ describe "Client" do
         response[:drop][:size].should_not be_nil
         response[:drop][:privacy].should_not be_nil
         response[:drop][:obscure_code].should_not be_nil
-        response[:drop][:short_link].should_not be_nil
+        response[:drop][:shortlink].should_not be_nil
         response[:drop][:used_space].should_not be_nil
         response[:drop][:total_space].should_not be_nil
 
@@ -260,7 +261,7 @@ describe "Client" do
         response[:drop][:privacy].should_not be_nil
         response[:drop][:password].should_not be_nil
         response[:drop][:obscure_code].should_not be_nil
-        response[:drop][:short_link].should_not be_nil
+        response[:drop][:shortlink].should_not be_nil
         response[:drop][:used_space].should_not be_nil
         response[:drop][:total_space].should_not be_nil
 

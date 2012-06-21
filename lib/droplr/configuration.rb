@@ -29,19 +29,18 @@ module Droplr
     INTEGER_FIELDS = %w(created_at subscription_end max_upload_size extra_space used_space total_space drop_count)
     BOOLEAN_FIELDS = %w(use_domain use_root_redirect)
 
-    # some converting to stay inline with ruby conventions
-    CAMEL_TO_UNDERSCORE_FIELDS      = {
+    # header-formatted fields come back as downcased strings, but we want underscored.
+    HEADER_TO_UNDERSCORE_FIELDS     = {
       "createdat"       => "created_at",
       "customerid"      => "customer_id",
       "dropcount"       => "drop_count",
       "dropprivacy"     => "drop_privacy",
       "extraspace"      => "extra_space",
+      "filecreatedat"   => "file_created_at",
       "lastaccess"      => "last_access",
       "maxuploadsize"   => "max_upload_size",
       "obscurecode"     => "obscure_code",
       "rootredirect"    => "root_redirect",
-      "shortlink"       => "short_link",
-      "sortBy"          => "sort_by",
       "subscriptionend" => "subscription_end",
       "totalspace"      => "total_space",
       "usedomain"       => "use_domain",
@@ -49,7 +48,21 @@ module Droplr
       "userootredirect" => "use_root_redirect"
     }
 
-    UNDERSCORE_TO_CAMEL_FIELDS      = CAMEL_TO_UNDERSCORE_FIELDS.invert
+    UNDERSCORE_TO_HEADER_FIELDS     = HEADER_TO_UNDERSCORE_FIELDS.invert
+
+    # json-formatted fields come back as camel-cased, but we want underscored.
+    JSON_TO_UNDERSCORE_FIELDS       = {
+      "sortBy"        => "sort_by",
+      "obscureCode"   => "obscure_code",
+      "createdAt"     => "created_at",
+      "fileCreatedAt" => "file_created_at",
+      "lastAccess"    => "last_access",
+      "previewThumb"  => "preview_thumb",
+      "previewSmall"  => "preview_small",
+      "previewMedium" => "preview_medium"
+    }
+
+    UNDERSCORE_TO_JSON_FIELDS        = JSON_TO_UNDERSCORE_FIELDS.invert
 
     def initialize(options)
       options.each do |key, value|

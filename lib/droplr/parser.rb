@@ -12,7 +12,7 @@ module Droplr
         success_hash = allowed_fields.each_with_object(base_hash) do |field, hash|
           header                  = headers["x-droplr-#{field}"]
           # make sure to return our fields as properly underscored instead of camel-cased
-          underscore_lookup       = Droplr::Configuration::CAMEL_TO_UNDERSCORE_FIELDS
+          underscore_lookup       = Droplr::Configuration::HEADER_TO_UNDERSCORE_FIELDS
           field                   = underscore_lookup[field] || field
 
           next if header.nil?
@@ -31,7 +31,20 @@ module Droplr
 
     def parse_success_json(response, object_key)
       parsed_body  = response.body ? JSON.parse(response.body) : nil
-      success_hash = {object_key => parsed_body}
+      success_hash = {}
+
+      # if we do have a body, we should go through and build each member of the object
+      # we want to return so we get consistent repsonses. sometimes this will be an array
+      # for which we need to parse all elements, other times a single hash.
+      if parsed_body && parsed_body.is_a?(Array)
+        corrected_response = parsed_body.map do |response_element|
+          json_case_correct_object(response_element)
+        end
+      elsif parsed_body
+        corrected_response = json_case_correct_object(parsed_body)
+      end
+
+      success_hash[object_key] = corrected_response ||= nil
       success_hash.merge({:request => {:status => response.status}})
     end
 
@@ -43,6 +56,15 @@ module Droplr
     end
 
   private
+
+    def json_case_correct_object(element)
+      corrected_hash = {}
+      element.each do |key, value|
+        key = Droplr::Configuration::JSON_TO_UNDERSCORE_FIELDS[key] || key
+        corrected_hash[key.to_sym] = value
+      end
+      corrected_hash
+    end
 
     def type_coerced_header(field, value)
       if Droplr::Configuration::INTEGER_FIELDS.include?(field)

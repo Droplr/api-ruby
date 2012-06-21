@@ -29,8 +29,8 @@ module Droplr
     end
 
     def list_drops(options = {})
-      options = camelized_params(options)
-      check_for_invalid_params(options, Droplr::Configuration::LIST_DROPS_PARAMS)
+      options = camelized_params(options, :json)
+      check_for_invalid_params(options, Droplr::Configuration::LIST_DROPS_PARAMS, :json)
 
       response = Droplr::Service.list_drops(options)
       handle_json_response(response, :drops)
@@ -131,9 +131,13 @@ module Droplr
       end
     end
 
-    def check_for_invalid_params(params, allowed_params, message = nil)
+    def check_for_invalid_params(params, allowed_params, message = nil, request_type = :headers)
+      coercion_hash = request_type == :headers ?
+                        Droplr::Configuration::UNDERSCORE_TO_HEADER_FIELDS :
+                        Droplr::Configuration::UNDERSCORE_TO_JSON_FIELDS
+
       params.each do |key, value|
-        converted_key = Droplr::Configuration::UNDERSCORE_TO_CAMEL_FIELDS[key.to_s] || key.to_s
+        converted_key = coercion_hash[key.to_s] || key.to_s
         unless allowed_params.include?(converted_key)
           message = message || "Invalid parameter supplied for request: #{converted_key}"
           raise Droplr::RequestError.new(message)
@@ -155,11 +159,14 @@ module Droplr
       end
     end
 
-    def camelized_params(params)
+    def camelized_params(params, request_type = :headers)
       converted_params = {}
+      coercion_hash    = request_type == :headers ?
+                           Droplr::Configuration::UNDERSCORE_TO_HEADER_FIELDS :
+                           Droplr::Configuration::UNDERSCORE_TO_JSON_FIELDS
 
       params.each do |key, value|
-        new_key = Droplr::Configuration::UNDERSCORE_TO_CAMEL_FIELDS[key.to_s] || key
+        new_key                   = coercion_hash[key.to_s] || key
         converted_params[new_key] = value
       end
 
