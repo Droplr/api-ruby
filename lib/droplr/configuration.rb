@@ -26,7 +26,7 @@ module Droplr
     NOTE_VARIANTS                   = %w(markdown textile code plain)
 
     # fields that need conversion in our parser when passed as a string
-    INTEGER_FIELDS = %w(created_at subscription_end max_upload_size extra_space used_space total_space drop_count)
+    INTEGER_FIELDS = %w(id created_at subscription_end max_upload_size extra_space used_space total_space drop_count)
     BOOLEAN_FIELDS = %w(use_domain use_root_redirect)
 
     # header-formatted fields come back as downcased strings, but we want underscored.
