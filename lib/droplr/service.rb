@@ -24,7 +24,7 @@ module Droplr
           req.headers["Content-Type"] = ""
 
           set_base_headers(req)
-          account_options.each { |key, value| req.headers["x-droplr-#{key}"] = value }
+          account_options.each { |key, value| req.headers["x-droplr-#{key}"] = value.to_s }
         end
       end
 
