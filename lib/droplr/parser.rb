@@ -21,6 +21,13 @@ module Droplr
           hash[object_key][field.to_sym] = type_coerced_header(field, header)
         end
 
+        # and we add our own content field, so it is always available. this can't come back in
+        # the headers because in the case of a note or a binary or something, it could be huge.
+        if object_key == :drop
+          response_content = response.status == 307 ? headers["Location"] : response.body
+          success_hash[object_key][:content] = response_content
+        end
+
         # we name this in conjunction with faraday's conventions so we can check for an error
         # in the original response or our bulit object in the same way
         success_hash.merge({:request => {:status => response.status}})
@@ -52,7 +59,12 @@ module Droplr
       http_status = response.status
       message     = response.headers["x-droplr-errordetails"]
       error_code  = response.headers["x-droplr-errorcode"]
-      raise DroplrError.new(message, error_code, http_status)
+      additional_info = response.headers.each_with_object({}) do |header, hash|
+        next unless header_name = header[0][/(?<=x-droplr-)[\w]+/]
+        next if ["errordetails", "errorcode"].include?(header_name)
+        hash[header_name] = header[1]
+      end
+      raise DroplrError.new(message, error_code, http_status, additional_info)
     end
 
   private
@@ -71,6 +83,8 @@ module Droplr
         Integer(value)
       elsif Droplr::Configuration::BOOLEAN_FIELDS.include?(field)
         value == "true"
+      elsif Droplr::Configuration::ENCODED_FIELDS.include?(field)
+        Base64.strict_decode64(value)
       else
         value
       end
