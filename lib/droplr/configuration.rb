@@ -27,7 +27,8 @@ module Droplr
 
     # fields that need conversion in our parser when passed as a string
     INTEGER_FIELDS = %w(id created_at subscription_end max_upload_size extra_space used_space total_space drop_count)
-    BOOLEAN_FIELDS = %w(use_domain use_root_redirect)
+    BOOLEAN_FIELDS = %w(use_domain use_root_redirect owner_is_pro)
+    ENCODED_FIELDS = %w(title)
 
     # header-formatted fields come back as downcased strings, but we want underscored.
     HEADER_TO_UNDERSCORE_FIELDS     = {
@@ -40,6 +41,10 @@ module Droplr
       "lastaccess"      => "last_access",
       "maxuploadsize"   => "max_upload_size",
       "obscurecode"     => "obscure_code",
+      "ownerispro"      => "owner_is_pro",
+      "previewthumb"    => "preview_thumb",
+      "previewsmall"    => "preview_small",
+      "previewmedium"   => "preview_medium",
       "rootredirect"    => "root_redirect",
       "subscriptionend" => "subscription_end",
       "totalspace"      => "total_space",
