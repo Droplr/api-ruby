@@ -97,11 +97,15 @@ module Droplr
         request.headers["Date"]          = (Time.now.to_i * 1000).to_s
         request.headers["User-Agent"]    = configuration.user_agent
 
-        auth_options                     = auth_options_from_request(request, options)
-        request.headers["Authorization"] = authentication_header(auth_options)
+        if authentication_header = options[:authentication_header]
+          request.headers["Authorization"] = authentication_header
+        else
+          authentication_options           = authentication_options_from_request(request, options)
+          request.headers["Authorization"] = authentication_header(authentication_options)
+        end
       end
 
-      def auth_options_from_request(request, options)
+      def authentication_options_from_request(request, options)
         {
           :method       => request.method.to_s,
           :path         => request.path,
