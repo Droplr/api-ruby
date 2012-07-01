@@ -1,12 +1,13 @@
 module Droplr
   class DroplrError < StandardError
-    attr_reader :message, :error_code, :http_status, :json_body
+    attr_reader :message, :error_code, :http_status, :json_body, :additional_info
 
-    def initialize(message = nil, error_code = nil, http_status = nil)
-      @message     = message
-      @error_code  = error_code
-      @http_status = http_status
-      @json_body   = build_json_body
+    def initialize(message = nil, error_code = nil, http_status = nil, additional_info = nil)
+      @message         = message
+      @error_code      = error_code
+      @http_status     = http_status
+      @json_body       = build_json_body
+      @additional_info = additional_info
     end
 
     def to_s
