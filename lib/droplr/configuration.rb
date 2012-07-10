@@ -26,9 +26,18 @@ module Droplr
     NOTE_VARIANTS                   = %w(markdown textile code plain)
 
     # fields that need conversion in our parser when passed as a string
-    INTEGER_FIELDS = %w(id created_at subscription_end max_upload_size extra_space used_space total_space drop_count)
-    BOOLEAN_FIELDS = %w(use_domain use_root_redirect owner_is_pro)
-    ENCODED_FIELDS = %w(title)
+    INTEGER_FIELDS = {
+      "account" => %w(subscription_end max_upload_size extra_space used_space total_space drop_count created_at),
+      "drop"    => %w(id created_at)
+    }
+    BOOLEAN_FIELDS = {
+      "account" => %w(use_domain use_root_redirect),
+      "drop"    => %w(owner_is_pro)
+    }
+    ENCODED_FIELDS = {
+      "account" => %w(),
+      "drop"    => %w(title)
+    }
 
     # header-formatted fields come back as downcased strings, but we want underscored.
     HEADER_TO_UNDERSCORE_FIELDS     = {

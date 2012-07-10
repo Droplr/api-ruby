@@ -89,16 +89,6 @@ module Droplr
 
   private
 
-    # TODO : handle general connection errors. for a test scenario, turn off your internet and interact with the API.
-    def catch_connection_errors
-      begin
-        yield
-      rescue Faraday::Error::ConnectionFailed => e
-        message = "Could not connect to the API server. The server might be down, or you might have no internet connection."
-        raise Droplr::ConfigurationError.new(message)
-      end
-    end
-
     def handle_header_response(response, object_type, allowed_headers = nil)
       if Droplr::Client.was_successful(response)
         Droplr::Parser.parse_success_headers(response, object_type, allowed_headers)

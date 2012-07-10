@@ -45,7 +45,7 @@ describe "Client" do
 
     context "Reading account information" do
 
-      it "gets correct values" do
+      it "gets correct values", :focus => true do
         response = authenticated_client.read_account_details
 
         response.should_not be_nil

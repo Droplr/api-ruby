@@ -18,7 +18,7 @@ module Droplr
           next if header.nil?
 
           # our header would have come back as a string, so we coerce its type
-          hash[object_key][field.to_sym] = type_coerced_header(field, header)
+          hash[object_key][field.to_sym] = type_coerced_header(object_key.to_s, field, header)
         end
 
         # and we add our own content field, so it is always available. this can't come back in
@@ -78,12 +78,12 @@ module Droplr
       corrected_hash
     end
 
-    def type_coerced_header(field, value)
-      if Droplr::Configuration::INTEGER_FIELDS.include?(field)
+    def type_coerced_header(object_key, field, value)
+      if Droplr::Configuration::INTEGER_FIELDS[object_key].include?(field)
         Integer(value)
-      elsif Droplr::Configuration::BOOLEAN_FIELDS.include?(field)
+      elsif Droplr::Configuration::BOOLEAN_FIELDS[object_key].include?(field)
         value == "true"
-      elsif Droplr::Configuration::ENCODED_FIELDS.include?(field)
+      elsif Droplr::Configuration::ENCODED_FIELDS[object_key].include?(field)
         Base64.strict_decode64(value)
       else
         value

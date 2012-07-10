@@ -10,108 +10,97 @@ module Droplr
       end
 
       def read_account_details
-        base_request.get do |req|
-          req.url Droplr::Configuration::ACCOUNT_ENDPOINT
+        url = Droplr::Configuration::ACCOUNT_ENDPOINT
 
-          set_base_headers(req)
-        end
+        execute_request(:get, url, nil, base_headers)
       end
 
       def edit_account_details(account_options)
-        base_request.put do |req|
-          req.url Droplr::Configuration::ACCOUNT_ENDPOINT
-          # TODO : why does this request fail if this is not set?
-          req.headers["Content-Type"] = ""
+        url     = Droplr::Configuration::ACCOUNT_ENDPOINT
+        # TODO : why does this fail if this is not set?
+        headers = base_headers.merge({"Content-Type" => ""})
 
-          set_base_headers(req)
-          account_options.each { |key, value| req.headers["x-droplr-#{key}"] = value.to_s }
-        end
+        account_options.each { |key, value| headers["x-droplr-#{key}"] = value.to_s }
+        execute_request(:put, url, nil, headers)
       end
 
       def read_drop(code)
-        base_request.get do |req|
-          req.url "#{Droplr::Configuration::DROPS_ENDPOINT}/#{code}"
+        url = "#{Droplr::Configuration::DROPS_ENDPOINT}/#{code}"
 
-          set_base_headers(req)
-        end
+        execute_request(:get, url, nil, base_headers)
       end
 
       def list_drops(drop_options)
-        base_request.get do |req|
-          req.url build_query_strings_for_options("#{Droplr::Configuration::DROPS_ENDPOINT}.json", drop_options)
-          req.headers["Content-Type"] = "application/json"
+        url     = build_query_strings_for_options("#{Droplr::Configuration::DROPS_ENDPOINT}.json", drop_options)
+        headers = base_headers.merge({"Content-Type" => "application/json"})
 
-          set_base_headers(req)
-        end
+        execute_request(:get, url, nil, headers)
       end
 
       def shorten_link(link)
-        base_request.post do |req|
-          req.url Droplr::Configuration::LINKS_ENDPOINT
-          req.headers["Content-Type"] = "text/plain"
+        url     = Droplr::Configuration::LINKS_ENDPOINT
+        headers = base_headers.merge({"Content-Type" => "text/plain"})
 
-          set_base_headers(req)
-          req.body = link
-        end
+        execute_request(:post, url, link, headers)
       end
 
       def create_note(contents, drop_options)
+        url          = Droplr::Configuration::NOTES_ENDPOINT
         content_type = drop_options[:variant] ? "text/#{drop_options[:variant]}" : "text/plain"
-        base_request.post do |req|
-          req.url Droplr::Configuration::NOTES_ENDPOINT
-          req.headers["Content-Type"] = content_type
+        headers      = base_headers.merge({"Content-Type" => content_type})
 
-          set_base_headers(req)
-          req.body = contents
-        end
+        execute_request(:post, url, contents, headers)
       end
 
       def upload_file(contents, drop_options)
-        base_request.post do |req|
-          req.url Droplr::Configuration::FILES_ENDPOINT
-          req.headers["Content-Type"]      = drop_options[:content_type]
+        url     = Droplr::Configuration::FILES_ENDPOINT
+        headers = base_headers.merge({"Content-Type"      => drop_options[:content_type],
+                                      "x-droplr-filename" => drop_options[:filename]})
 
-          set_base_headers(req, drop_options)
-          req.headers["x-droplr-filename"] = drop_options[:filename]
-          req.body                         = contents
-        end
+        execute_request(:post, url, contents, headers)
       end
 
       def delete_drop(code)
-        base_request.delete do |req|
-          req.url "#{Droplr::Configuration::DROPS_ENDPOINT}/#{code}"
+        url = "#{Droplr::Configuration::DROPS_ENDPOINT}/#{code}"
 
-          set_base_headers(req)
-        end
+        execute_request(:delete, url, nil, base_headers)
       end
 
       def base_request
-        @base_request ||= Faraday.new({:url => configuration.base_url})
+        @base_request ||= Faraday.new(:url => configuration.base_url)
       end
 
     private
 
-      def set_base_headers(request, options = {})
-        # date header must be set first so our authentication_header method can introspect
-        # the request in order to find the date it should sign itself with
-        request.headers["Date"]          = (Time.now.to_i * 1000).to_s
-        request.headers["User-Agent"]    = configuration.user_agent
+      def execute_request(method, url, body, headers)
+        headers["Authorization"] ||= build_authentication_header(method, url, headers)
 
-        if authentication_header = options[:authentication_header]
-          request.headers["Authorization"] = authentication_header
-        else
-          authentication_options           = authentication_options_from_request(request, options)
-          request.headers["Authorization"] = authentication_header(authentication_options)
+        begin
+          base_request.run_request(method, url, body, headers)
+        rescue Faraday::Error::ClientError
+          message = "Could not connect to the API server. The server might be down, or you might have no internet connection."
+          raise Droplr::RequestError.new(message)
         end
       end
 
-      def authentication_options_from_request(request, options)
+      def base_headers
+        # date header must be set first so our authentication_header method can introspect
+        # the request in order to find the date it should sign itself with
         {
-          :method       => request.method.to_s,
-          :path         => request.path,
-          :date         => request.headers["Date"],
-          :content_type => options[:content_type] || request.headers["Content-Type"] || ""
+          "Date"       => (Time.now.to_i * 1000).to_s,
+          "User-Agent" => configuration.user_agent
         }
+      end
+
+      def build_authentication_header(method, url, headers)
+        authentication_params = {
+          :method       => method.to_s,
+          :path         => url.match(/[\w\/\.]*/), # avoid matching the query params
+          :date         => headers["Date"],
+          :content_type => headers["Content-Type"] || ""
+        }
+
+        authentication_header(authentication_params)
       end
 
       def build_query_strings_for_options(url, options = nil)
