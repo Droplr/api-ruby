@@ -73,7 +73,7 @@ module Droplr
     private
 
       def execute_request(method, url, body, headers)
-        headers["Authorization"] ||= build_authentication_header(method, url, headers)
+        headers["Authorization"] ||= authentication_header(authentication_params(method, url, headers))
 
         begin
           base_request.run_request(method, url, body, headers)
@@ -83,6 +83,13 @@ module Droplr
         end
       end
 
+      def authentication_params(method, url, headers)
+        {:method       => method.to_s,
+         :path         => url.match(/[\w\/\.]*/)[0], # avoid matching the query params
+         :date         => headers["Date"],
+         :content_type => headers["Content-Type"] || ""}
+      end
+
       def base_headers
         # date header must be set first so our authentication_header method can introspect
         # the request in order to find the date it should sign itself with
@@ -90,17 +97,6 @@ module Droplr
           "Date"       => (Time.now.to_i * 1000).to_s,
           "User-Agent" => configuration.user_agent
         }
-      end
-
-      def build_authentication_header(method, url, headers)
-        authentication_params = {
-          :method       => method.to_s,
-          :path         => url.match(/[\w\/\.]*/), # avoid matching the query params
-          :date         => headers["Date"],
-          :content_type => headers["Content-Type"] || ""
-        }
-
-        authentication_header(authentication_params)
       end
 
       def build_query_strings_for_options(url, options = nil)
