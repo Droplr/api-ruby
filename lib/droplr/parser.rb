@@ -64,7 +64,7 @@ module Droplr
         next if ["errordetails", "errorcode"].include?(header_name)
         hash[header_name] = header[1]
       end
-      raise DroplrError.new(message, error_code, http_status, additional_info)
+      raise Droplr::UserError.new(message, error_code, http_status, additional_info)
     end
 
   private

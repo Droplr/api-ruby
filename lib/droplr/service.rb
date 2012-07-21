@@ -17,8 +17,7 @@ module Droplr
 
       def edit_account_details(account_options)
         url     = Droplr::Configuration::ACCOUNT_ENDPOINT
-        # TODO : why does this fail if this is not set?
-        headers = base_headers.merge({"Content-Type" => ""})
+        headers = base_headers.merge("Content-Type" => "")
 
         account_options.each { |key, value| headers["x-droplr-#{key}"] = value.to_s }
         execute_request(:put, url, nil, headers)
@@ -32,14 +31,14 @@ module Droplr
 
       def list_drops(drop_options)
         url     = build_query_strings_for_options("#{Droplr::Configuration::DROPS_ENDPOINT}.json", drop_options)
-        headers = base_headers.merge({"Content-Type" => "application/json"})
+        headers = base_headers.merge("Content-Type" => "application/json")
 
         execute_request(:get, url, nil, headers)
       end
 
       def shorten_link(link)
         url     = Droplr::Configuration::LINKS_ENDPOINT
-        headers = base_headers.merge({"Content-Type" => "text/plain"})
+        headers = base_headers.merge("Content-Type" => "text/plain")
 
         execute_request(:post, url, link, headers)
       end
@@ -47,15 +46,15 @@ module Droplr
       def create_note(contents, drop_options)
         url          = Droplr::Configuration::NOTES_ENDPOINT
         content_type = drop_options[:variant] ? "text/#{drop_options[:variant]}" : "text/plain"
-        headers      = base_headers.merge({"Content-Type" => content_type})
+        headers      = base_headers.merge("Content-Type" => content_type)
 
         execute_request(:post, url, contents, headers)
       end
 
       def upload_file(contents, drop_options)
         url     = Droplr::Configuration::FILES_ENDPOINT
-        headers = base_headers.merge({"Content-Type"      => drop_options[:content_type],
-                                      "x-droplr-filename" => drop_options[:filename]})
+        headers = base_headers.merge("Content-Type"      => drop_options[:content_type],
+                                     "x-droplr-filename" => drop_options[:filename])
 
         execute_request(:post, url, contents, headers)
       end
