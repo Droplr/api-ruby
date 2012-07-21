@@ -79,7 +79,7 @@ module Droplr
           base_request.run_request(method, url, body, headers)
         rescue Faraday::Error::ClientError
           message = "Could not connect to the API server. The server might be down, or you might have no internet connection."
-          raise Droplr::RequestError.new(message)
+          raise Droplr::UserError.new(message)
         end
       end
 

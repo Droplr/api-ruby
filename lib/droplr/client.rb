@@ -138,14 +138,14 @@ module Droplr
     def check_for_empty_params(params, message = nil)
       if params.nil? || params.empty?
         message = message || "You must provide at least one option for this request."
-        raise Droplr::RequestError.new(message)
+        raise Droplr::UserError.new(message)
       end
     end
 
     def check_for_valid_url(url)
       if (url =~ URI::regexp).nil?
         message = "The link you're trying to shorten appears to be invalid."
-        raise Droplr::RequestError.new(message)
+        raise Droplr::UserError.new(message)
       end
     end
 

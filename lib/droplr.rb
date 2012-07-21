@@ -9,6 +9,7 @@ require "droplr/parser"
 require "droplr/errors/droplr_error"
 require "droplr/errors/request_error"
 require "droplr/errors/configuration_error"
+require "droplr/errors/user_error"
 
 # external utilities
 require "json"
