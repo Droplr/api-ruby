@@ -54,6 +54,7 @@ module Droplr
       "previewthumb"    => "preview_thumb",
       "previewsmall"    => "preview_small",
       "previewmedium"   => "preview_medium",
+      "referreremail"   => "referrer_email",
       "rootredirect"    => "root_redirect",
       "subscriptionend" => "subscription_end",
       "totalspace"      => "total_space",
