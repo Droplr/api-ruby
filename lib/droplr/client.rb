@@ -1,20 +1,21 @@
 module Droplr
   class Client
 
-    @@configuration = nil
+    attr_accessor :service
 
     # TODO : remove test credentials for easy copypasta before publishing
     # require 'json'; require 'base64'; require 'openssl'; require 'faraday'; require 'droplr';
     # d = Droplr::Client.new({:token => "user_1@droplr.com", :secret => Digest::SHA1.hexdigest("pass_1"), :use_production => false, :app_public_key => "app_0_publickey", :app_private_key => "app_0_privatekey", :user_agent => 'DroplrWeb/1.0.3'})
     # d.read_account_details
 
-    def initialize(options)
+    def initialize(options, service = nil)
       check_client_configuration(options)
-      @@configuration = Configuration.new(options)
+      configuration = Configuration.new(options)
+      self.service  = service || Droplr::Service.new(configuration)
     end
 
     def read_account_details
-      response = Droplr::Service.read_account_details
+      response = service.read_account_details
 
       handle_header_response(response, :account, Droplr::Configuration::READ_ACCOUNT_FIELDS)
     end
@@ -24,7 +25,7 @@ module Droplr
       check_for_empty_params(options, "You must provide at least one account field to update.")
       check_for_invalid_params(options, Droplr::Configuration::EDIT_ACCOUNT_FIELDS)
 
-      response = Droplr::Service.edit_account_details(options)
+      response = service.edit_account_details(options)
       handle_header_response(response, :account, Droplr::Configuration::READ_ACCOUNT_FIELDS)
     end
 
@@ -32,14 +33,14 @@ module Droplr
       options = camelized_params(options, :json)
       check_for_invalid_params(options, Droplr::Configuration::LIST_DROPS_PARAMS, :json)
 
-      response = Droplr::Service.list_drops(options)
+      response = service.list_drops(options)
       handle_json_response(response, :drops)
     end
 
     def read_drop(code = nil)
       check_for_empty_params(code, "You must specify the drop you wish to read.")
 
-      response = Droplr::Service.read_drop(code)
+      response = service.read_drop(code)
       handle_header_response(response, :drop, Droplr::Configuration::READ_DROP_FIELDS)
     end
 
@@ -48,7 +49,7 @@ module Droplr
       # TODO : not sure that this is the best method to do this check
       check_for_valid_url(link)
 
-      response = Droplr::Service.shorten_link(link)
+      response = service.shorten_link(link)
       handle_header_response(response, :drop, Droplr::Configuration::CREATE_DROP_FIELDS)
     end
 
@@ -62,7 +63,7 @@ module Droplr
                                Droplr::Configuration::NOTE_VARIANTS,
                                "If a note variant is specified, it must be oen of: #{Droplr::Configuration::NOTE_VARIANTS.join(', ').downcase}")
 
-      response = Droplr::Service.create_note(contents, options)
+      response = service.create_note(contents, options)
       handle_header_response(response, :drop, Droplr::Configuration::CREATE_DROP_WITH_VARIANT_FIELDS)
     end
 
@@ -71,14 +72,14 @@ module Droplr
       check_for_empty_params(options[:filename],     "You must specify the filename of a file to upload.")
       check_for_empty_params(options[:content_type], "You must specify the content_type of a file to upload.")
 
-      response = Droplr::Service.upload_file(contents, options)
+      response = service.upload_file(contents, options)
       handle_header_response(response, :drop, Droplr::Configuration::CREATE_DROP_WITH_VARIANT_FIELDS)
     end
 
     def delete_drop(code = nil)
       check_for_empty_params(code, "You must specify the drop you wish to delete.")
 
-      response = Droplr::Service.delete_drop(code)
+      response = service.delete_drop(code)
       handle_header_response(response, :drop)
     end
 
