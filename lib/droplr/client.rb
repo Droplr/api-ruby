@@ -3,14 +3,9 @@ module Droplr
 
     attr_accessor :service
 
-    # TODO : remove test credentials for easy copypasta before publishing
-    # require 'json'; require 'base64'; require 'openssl'; require 'faraday'; require 'droplr';
-    # d = Droplr::Client.new({:token => "user_1@droplr.com", :secret => Digest::SHA1.hexdigest("pass_1"), :use_production => false, :app_public_key => "app_0_publickey", :app_private_key => "app_0_privatekey", :user_agent => 'DroplrWeb/1.0.3'})
-    # d.read_account_details
-
     def initialize(options, service = nil)
       check_client_configuration(options)
-      configuration = Configuration.new(options)
+      configuration = Droplr::Configuration.new(options)
       self.service  = service || Droplr::Service.new(configuration)
     end
 
@@ -31,7 +26,7 @@ module Droplr
 
     def list_drops(options = {})
       options = camelized_params(options, :json)
-      check_for_invalid_params(options, Droplr::Configuration::LIST_DROPS_PARAMS, :json)
+      check_for_invalid_params(options, Droplr::Configuration::LIST_DROPS_PARAMS, nil, :json)
 
       response = service.list_drops(options)
       handle_json_response(response, :drops)

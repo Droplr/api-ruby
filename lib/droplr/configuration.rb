@@ -22,7 +22,7 @@ module Droplr
     CREATE_DROP_FIELDS              = %w(code createdat type title size privacy password obscurecode shortlink usedspace totalspace)
     CREATE_DROP_WITH_VARIANT_FIELDS = CREATE_DROP_FIELDS << "variant"
     READ_DROP_FIELDS                = %w(code createdat type title size privacy password obscurecode shortlink variant views lastaccess)
-    LIST_DROPS_PARAMS               = %w(offset amount type sortBy order since until)
+    LIST_DROPS_PARAMS               = %w(offset amount type sortBy order since until search)
     NOTE_VARIANTS                   = %w(markdown textile code plain)
 
     # fields that need conversion in our parser when passed as a string
