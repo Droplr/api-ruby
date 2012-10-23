@@ -27,7 +27,7 @@ module Droplr
 
     # fields that need conversion in our parser when passed as a string
     INTEGER_FIELDS = {
-      "account"  => %w(subscription_end max_upload_size extra_space used_space total_space drop_count created_at),
+      "account"  => %w(subscription_end max_upload_size extra_space used_space total_space drop_count created_at referrals),
       "drop"     => %w(id created_at last_access size),
       "customer" => %w()
     }
