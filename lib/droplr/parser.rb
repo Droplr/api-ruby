@@ -56,14 +56,16 @@ module Droplr
     end
 
     def parse_error_headers(response)
-      http_status = response.status
-      message     = response.headers["x-droplr-errordetails"]
-      error_code  = response.headers["x-droplr-errorcode"]
+      http_status     = response.status
+      message         = response.headers["x-droplr-errordetails"]
+      error_code      = response.headers["x-droplr-errorcode"]
       additional_info = response.headers.each_with_object({}) do |header, hash|
         next unless header_name = header[0][/(?<=x-droplr-)[\w]+/]
         next if ["errordetails", "errorcode"].include?(header_name)
         hash[header_name] = header[1]
       end
+
+      # raise an error that clients will be able to capture
       raise Droplr::UserError.new(message, error_code, http_status, additional_info)
     end
 

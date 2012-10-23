@@ -54,12 +54,15 @@ The following are available actions:
 
 #### Errors
 
-If you get an error from a call, you'll receive a hash that looks like the following:
+Generally, errors are a result of misconfiguration. Occasionally, there could be other other causes (an invalid password is a good example here). The gem will raise an exception whenever an API request is unsuccessful, and it will take the following format:
 
-    {:errorcode    => "DeleteDrop.NoDrop",
-     :errordetails => "No such drop"}
+    Droplr::UserError
+        message - a fully-formed message you can directly pass to your users
+        error_code - a Droplr-supplied, specific error code you can use to map to a message for your users
+        http_status - the HTTP code the errant call responded with
+        additional_info - any additional info we're able to supply back from the API
 
-Which you can then pass along to your users.
+Which you can then rescue, massage, and pass along to your users.
 
 -----
 
