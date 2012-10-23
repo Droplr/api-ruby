@@ -2,6 +2,160 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "Service" do
 
-  # write specs to ensure the proper headers get set for various http requests
+  # we are going to test faraday_stub.run_request's params because we can be sure the auth
+  # header has been built by then. and if we got that right, we probably got the method right.
+  let(:faraday_stub){ double("faraday", :url => "http://test.host") }
+  let(:api_client){ Droplr::Client.new({:token           => "test_token",
+                                        :secret          => "a" * 40,
+                                        :app_public_key  => "some_public_key",
+                                        :app_private_key => "some_private_key",
+                                        :user_agent      => "some_user_agent"}) }
+
+  before(:each) do
+    # we calculate the time in our header signatures, and this ensures we remove variation
+    Time.stub(:now).and_return(134434487300)
+    Droplr::Service.any_instance.stub(:base_request).and_return(faraday_stub)
+  end
+
+  context "#read_account_details" do
+
+    it "builds a request and authentication header correctly" do
+      expected_auth_string = "droplr c29tZV9wdWJsaWNfa2V5OnRlc3RfdG9rZW4=:dxBC50lafbmUuB4vZkKyj89hiVc="
+      faraday_stub.should_receive(:run_request).with(:get, "/account", nil, hash_including("Authorization" => expected_auth_string))
+
+      api_client.service.read_account_details
+    end
+
+    it "sets no content-type because it's a read operation" do
+      faraday_stub.should_receive(:run_request).with(:get, "/account", nil, hash_not_including("Content-Type"))
+
+      api_client.service.read_account_details
+    end
+
+  end
+
+  context "#edit_account_details" do
+
+    it "builds a request and authentication header correctly" do
+      expected_auth_string = "droplr c29tZV9wdWJsaWNfa2V5OnRlc3RfdG9rZW4=:SNLRKT79ZwBdsCr9+XpHgJk6CGo="
+      faraday_stub.should_receive(:run_request).with(:put, "/account", nil, hash_including("Authorization" => expected_auth_string))
+
+      api_client.service.edit_account_details({})
+    end
+
+    it "properly sets x-droplr-value headers" do
+      faraday_stub.should_receive(:run_request).with(:put, "/account", nil, hash_including({"x-droplr-theme" => "LIGHT", "x-droplr-dropprivacy" => "PRIVATE"}))
+
+      api_client.service.edit_account_details({:theme => "LIGHT", :dropprivacy => "PRIVATE"})
+    end
+
+    it "sets an empty content-type because it's a headers request that's not read-only" do
+      faraday_stub.should_receive(:run_request).with(:put, "/account", nil, hash_including("Content-Type" => ""))
+
+      api_client.service.edit_account_details({})
+    end
+
+  end
+
+  context "#read_drop" do
+
+    it "builds a request and authentication header correctly" do
+      drop_code            = "1234"
+      expected_auth_string = "droplr c29tZV9wdWJsaWNfa2V5OnRlc3RfdG9rZW4=:LN6za0hfrd060B4BDD0GWg2wbGQ="
+      faraday_stub.should_receive(:run_request).with(:get, "/drops/#{drop_code}", nil, hash_including("Authorization" => expected_auth_string))
+
+      api_client.service.read_drop(drop_code)
+    end
+
+  end
+
+  context "#list_drops" do
+
+    it "builds a request and authentication header correctly" do
+      expected_auth_string = "droplr c29tZV9wdWJsaWNfa2V5OnRlc3RfdG9rZW4=:Rlt/6Zqq0NSzFayUlPgqgcok7Gc="
+      faraday_stub.should_receive(:run_request).with(:get, "/drops.json?offset=50&sortBy=CREATION", nil, hash_including("Authorization" => expected_auth_string))
+
+      api_client.service.list_drops({:offset => 50, :sortBy => "CREATION"})
+    end
+
+    it "sets the appropriate content-type" do
+      faraday_stub.should_receive(:run_request).with(:get, "/drops.json?offset=50&sortBy=CREATION", nil, hash_including("Content-Type" => "application/json"))
+
+      api_client.service.list_drops({:offset => 50, :sortBy => "CREATION"})
+    end
+
+  end
+
+  context "#shorten_link" do
+
+    let(:link_to_shorten){ "https://droplr.com/hello" }
+
+    it "builds a request and authentication header correctly" do
+      expected_auth_string = "droplr c29tZV9wdWJsaWNfa2V5OnRlc3RfdG9rZW4=:eMLXN5mTjsyOglvWCCnVzsZ7yxA="
+      faraday_stub.should_receive(:run_request).with(:post, "/links", link_to_shorten, hash_including("Authorization" => expected_auth_string))
+
+      api_client.service.shorten_link(link_to_shorten)
+    end
+
+    it "sets the appropriate content-type" do
+      faraday_stub.should_receive(:run_request).with(:post, "/links", link_to_shorten, hash_including("Content-Type" => "text/plain"))
+
+      api_client.service.shorten_link(link_to_shorten)
+    end
+
+  end
+
+  context "#create_note" do
+
+    let(:note_content){ "some big long string" }
+
+    it "builds a request and authentication header correctly" do
+      expected_auth_string = "droplr c29tZV9wdWJsaWNfa2V5OnRlc3RfdG9rZW4=:uVgwpCP4EJv8BlpX0M9nYXfJyIU="
+      faraday_stub.should_receive(:run_request).with(:post, "/notes", note_content, hash_including("Authorization" => expected_auth_string))
+
+      api_client.service.create_note(note_content, {})
+    end
+
+    it "sets the appropriate content-type" do
+      faraday_stub.should_receive(:run_request).with(:post, "/notes", note_content, hash_including("Content-Type" => "text/markdown"))
+
+      api_client.service.create_note(note_content, {:variant => "markdown"})
+    end
+
+  end
+
+  context "#upload_file" do
+
+    let(:file_content){ "some big long string" }
+    let(:content_type){ "application/octet-stream" }
+    let(:file_title){ "Some File Title" }
+    let(:request_options){ {:content_type => content_type, :filename => file_title} }
+
+    it "builds a request and authentication header correctly" do
+      expected_auth_string = "droplr c29tZV9wdWJsaWNfa2V5OnRlc3RfdG9rZW4=:hJpUUCFpXkMMLyKh9n0HU6Q+Jao="
+      faraday_stub.should_receive(:run_request).with(:post, "/files", file_content, hash_including("Authorization" => expected_auth_string))
+
+      api_client.service.upload_file(file_content, request_options)
+    end
+
+    it "sets the appropriate content-type and filename" do
+      faraday_stub.should_receive(:run_request).with(:post, "/files", file_content, hash_including("Content-Type" => content_type, "x-droplr-filename" => file_title))
+
+      api_client.service.upload_file(file_content, request_options)
+    end
+
+  end
+
+  context "#delete_drop" do
+
+    it "builds a request and authentication header correctly" do
+      drop_code            = "1234"
+      expected_auth_string = "droplr c29tZV9wdWJsaWNfa2V5OnRlc3RfdG9rZW4=:8XACRGJwdWgSKuI4UL9kptMhLqA="
+      faraday_stub.should_receive(:run_request).with(:delete, "/drops/#{drop_code}", nil, hash_including("Authorization" => expected_auth_string))
+
+      api_client.service.delete_drop(drop_code)
+    end
+
+  end
 
 end
