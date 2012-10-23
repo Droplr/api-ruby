@@ -41,7 +41,6 @@ module Droplr
 
     def shorten_link(link = nil)
       check_for_empty_params(link, "You must specify the link you wish to shorten.")
-      # TODO : not sure that this is the best method to do this check
       check_for_valid_url(link)
 
       response = service.shorten_link(link)
@@ -56,7 +55,7 @@ module Droplr
       check_for_empty_params(contents, "You must specify the contents of a note to upload.")
       check_for_invalid_params([options[:variant]],
                                Droplr::Configuration::NOTE_VARIANTS,
-                               "If a note variant is specified, it must be oen of: #{Droplr::Configuration::NOTE_VARIANTS.join(', ').downcase}")
+                               "If a note variant is specified, it must be one of: #{Droplr::Configuration::NOTE_VARIANTS.join(', ').downcase}")
 
       response = service.create_note(contents, options)
       handle_header_response(response, :drop, Droplr::Configuration::CREATE_DROP_WITH_VARIANT_FIELDS)
@@ -126,7 +125,7 @@ module Droplr
         converted_key = coercion_hash[key.to_s] || key.to_s
         unless allowed_params.include?(converted_key)
           message = message || "Invalid parameter supplied for request: #{converted_key}"
-          raise Droplr::RequestError.new(message)
+          raise Droplr::UserError.new(message)
         end
       end
     end

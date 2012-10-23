@@ -45,7 +45,7 @@ module Droplr
 
     def create_note(contents, drop_options)
       url          = Droplr::Configuration::NOTES_ENDPOINT
-      content_type = drop_options[:variant] ? "text/#{drop_options[:variant]}" : "text/plain"
+      content_type = "text/#{drop_options[:variant]}"
       headers      = base_headers.merge("Content-Type" => content_type)
 
       execute_request(:post, url, contents, headers)
@@ -92,10 +92,8 @@ module Droplr
     def base_headers
       # date header must be set first so our authentication_header method can introspect
       # the request in order to find the date it should sign itself with
-      {
-        "Date"       => (Time.now.to_i * 1000).to_s,
-        "User-Agent" => configuration.user_agent
-      }
+      {"Date"       => (Time.now.to_i * 1000).to_s,
+       "User-Agent" => configuration.user_agent}
     end
 
     def build_query_strings_for_options(url, options = nil)
