@@ -18,7 +18,7 @@ module Droplr
 
     # allowed values
     EDIT_ACCOUNT_FIELDS             = %w(password theme usedomain domain userootredirect rootredirect dropprivacy)
-    READ_ACCOUNT_FIELDS             = %w(id createdat type subscriptionend maxuploadsize extraspace usedspace totalspace email usedomain domain userootredirect rootredirect dropprivacy theme dropcount referrals)
+    READ_ACCOUNT_FIELDS             = %w(id createdat type subscriptionend maxuploadsize extraspace usedspace totalspace email usedomain domain userootredirect rootredirect dropprivacy theme dropcount activedrops referrals)
     CREATE_DROP_FIELDS              = %w(code createdat type title size privacy password obscurecode shortlink usedspace totalspace)
     CREATE_DROP_WITH_VARIANT_FIELDS = CREATE_DROP_FIELDS << "variant"
     READ_DROP_FIELDS                = %w(code createdat type title size privacy password obscurecode shortlink variant views lastaccess)
@@ -47,6 +47,7 @@ module Droplr
       "createdat"       => "created_at",
       "customerid"      => "customer_id",
       "dropcount"       => "drop_count",
+      "activedrops"     => "active_drops",
       "dropprivacy"     => "drop_privacy",
       "extraspace"      => "extra_space",
       "filecreatedat"   => "file_created_at",
