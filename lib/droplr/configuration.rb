@@ -10,18 +10,14 @@ module Droplr
     DROPLR_DEV_SERVER_HOST          = "dev.droplr.com"
 
     # endpoints
-    ACCOUNT_ENDPOINT                = "/account"
+    ACCOUNT_ENDPOINT                = "/account.json"
     DROPS_ENDPOINT                  = "/drops"
-    LINKS_ENDPOINT                  = "/links"
-    NOTES_ENDPOINT                  = "/notes"
-    FILES_ENDPOINT                  = "/files"
+    LINKS_ENDPOINT                  = "/links.json"
+    NOTES_ENDPOINT                  = "/notes.json"
+    FILES_ENDPOINT                  = "/files.json"
 
     # allowed values
     EDIT_ACCOUNT_FIELDS             = %w(password theme usedomain domain userootredirect rootredirect dropprivacy)
-    READ_ACCOUNT_FIELDS             = %w(id createdat type subscriptionend maxuploadsize extraspace usedspace totalspace email usedomain domain userootredirect rootredirect dropprivacy theme dropcount activedrops referrals)
-    CREATE_DROP_FIELDS              = %w(code createdat type title size privacy password obscurecode shortlink usedspace totalspace)
-    CREATE_DROP_WITH_VARIANT_FIELDS = CREATE_DROP_FIELDS << "variant"
-    READ_DROP_FIELDS                = %w(code createdat type title size privacy password obscurecode shortlink variant views lastaccess)
     LIST_DROPS_PARAMS               = %w(offset amount type sortBy order since until search)
     NOTE_VARIANTS                   = %w(markdown textile code plain)
 
@@ -42,35 +38,8 @@ module Droplr
       "customer" => %w()
     }
 
-    # header-formatted fields come back as downcased strings, but we want underscored.
-    HEADER_TO_UNDERSCORE_FIELDS     = {
-      "createdat"       => "created_at",
-      "customerid"      => "customer_id",
-      "dropcount"       => "drop_count",
-      "activedrops"     => "active_drops",
-      "dropprivacy"     => "drop_privacy",
-      "extraspace"      => "extra_space",
-      "filecreatedat"   => "file_created_at",
-      "lastaccess"      => "last_access",
-      "maxuploadsize"   => "max_upload_size",
-      "obscurecode"     => "obscure_code",
-      "ownerispro"      => "owner_is_pro",
-      "previewthumb"    => "preview_thumb",
-      "previewsmall"    => "preview_small",
-      "previewmedium"   => "preview_medium",
-      "referreremail"   => "referrer_email",
-      "rootredirect"    => "root_redirect",
-      "subscriptionend" => "subscription_end",
-      "totalspace"      => "total_space",
-      "usedomain"       => "use_domain",
-      "usedspace"       => "used_space",
-      "userootredirect" => "use_root_redirect"
-    }
-
-    UNDERSCORE_TO_HEADER_FIELDS     = HEADER_TO_UNDERSCORE_FIELDS.invert
-
     # json-formatted fields come back as camel-cased, but we want underscored.
-    JSON_TO_UNDERSCORE_FIELDS       = {
+    JSON_TO_UNDERSCORE_FIELDS = {
       "sortBy"        => "sort_by",
       "obscureCode"   => "obscure_code",
       "createdAt"     => "created_at",
@@ -81,7 +50,7 @@ module Droplr
       "previewMedium" => "preview_medium"
     }
 
-    UNDERSCORE_TO_JSON_FIELDS        = JSON_TO_UNDERSCORE_FIELDS.invert
+    UNDERSCORE_TO_JSON_FIELDS = JSON_TO_UNDERSCORE_FIELDS.invert
 
     def initialize(options)
       options.each do |key, value|
