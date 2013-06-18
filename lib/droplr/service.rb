@@ -37,8 +37,8 @@ module Droplr
     end
 
     def shorten_link(link)
-      url     = "#{Droplr::Configuration::LINKS_ENDPOINT}.json"
-      headers = base_headers.merge("Content-Type" => "application/json")
+      url     = Droplr::Configuration::LINKS_ENDPOINT
+      headers = base_headers.merge("Content-Type" => "text/plain")
 
       execute_request(:post, url, link, headers)
     end
