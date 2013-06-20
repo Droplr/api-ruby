@@ -10,21 +10,20 @@ module Droplr
     end
 
     def read_account_details
-      url = Droplr::Configuration::ACCOUNT_ENDPOINT
+      url = "#{Droplr::Configuration::ACCOUNT_ENDPOINT}.json"
 
       execute_request(:get, url, nil, base_headers)
     end
 
     def edit_account_details(account_options)
-      url     = Droplr::Configuration::ACCOUNT_ENDPOINT
-      headers = base_headers.merge("Content-Type" => "")
+      url     = "#{Droplr::Configuration::ACCOUNT_ENDPOINT}.json"
+      headers = base_headers.merge("Content-Type" => "application/json")
 
-      account_options.each { |key, value| headers["x-droplr-#{key}"] = value.to_s }
-      execute_request(:put, url, nil, headers)
+      execute_request(:put, url, account_options, headers)
     end
 
     def read_drop(code)
-      url = "#{Droplr::Configuration::DROPS_ENDPOINT}/#{code}"
+      url = "#{Droplr::Configuration::DROPS_ENDPOINT}/#{code}.json"
 
       execute_request(:get, url, nil, base_headers)
     end
@@ -38,13 +37,13 @@ module Droplr
 
     def shorten_link(link)
       url     = "#{Droplr::Configuration::LINKS_ENDPOINT}.json"
-      headers = base_headers.merge("Content-Type" => "application/json")
+      headers = base_headers.merge("Content-Type" => "text/plain")
 
       execute_request(:post, url, link, headers)
     end
 
     def create_note(contents, drop_options)
-      url          = Droplr::Configuration::NOTES_ENDPOINT
+      url          = "#{Droplr::Configuration::NOTES_ENDPOINT}.json"
       content_type = "text/#{drop_options[:variant]}"
       headers      = base_headers.merge("Content-Type" => content_type)
 
@@ -52,7 +51,7 @@ module Droplr
     end
 
     def upload_file(contents, drop_options)
-      url     = Droplr::Configuration::FILES_ENDPOINT
+      url     = "#{Droplr::Configuration::FILES_ENDPOINT}.json"
       headers = base_headers.merge("Content-Type"      => drop_options[:content_type],
                                    "x-droplr-filename" => drop_options[:filename])
 
@@ -92,8 +91,8 @@ module Droplr
     def base_headers
       # date header must be set first so our authentication_header method can introspect
       # the request in order to find the date it should sign itself with
-      {"Date"       => (Time.now.to_i * 1000).to_s,
-       "User-Agent" => configuration.user_agent}
+      {"Date"         => (Time.now.to_i * 1000).to_s,
+       "User-Agent"   => configuration.user_agent}
     end
 
     def build_query_strings_for_options(url, options = nil)

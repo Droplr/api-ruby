@@ -10,11 +10,11 @@ module Droplr
     DROPLR_DEV_SERVER_HOST          = "dev.droplr.com"
 
     # endpoints
-    ACCOUNT_ENDPOINT                = "/account.json"
+    ACCOUNT_ENDPOINT                = "/account"
     DROPS_ENDPOINT                  = "/drops"
-    LINKS_ENDPOINT                  = "/links.json"
-    NOTES_ENDPOINT                  = "/notes.json"
-    FILES_ENDPOINT                  = "/files.json"
+    LINKS_ENDPOINT                  = "/links"
+    NOTES_ENDPOINT                  = "/notes"
+    FILES_ENDPOINT                  = "/files"
 
     # allowed values
     EDIT_ACCOUNT_FIELDS             = %w(password theme usedomain domain userootredirect rootredirect dropprivacy)
