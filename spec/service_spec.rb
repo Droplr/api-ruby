@@ -36,7 +36,7 @@ describe "Service" do
 
   context "#edit_account_details" do
 
-    it "builds a request and authentication header correctly", :focus => true do
+    it "builds a request and authentication header correctly" do
       expected_auth_string = "droplr c29tZV9wdWJsaWNfa2V5OnRlc3RfdG9rZW4=:dZ+ux4PpUunEk8L7fi60v2oyubI="
       faraday_stub.should_receive(:run_request).with(:put, "/account.json", {}, hash_including("Authorization" => expected_auth_string))
 
