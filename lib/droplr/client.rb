@@ -74,7 +74,7 @@ module Droplr
       check_for_empty_params(code, "You must specify the drop you wish to delete.")
 
       response = service.delete_drop(code)
-      handle_json_response(response, :drop)
+      self.class.was_successful(response)
     end
 
     def self.was_successful(response)
