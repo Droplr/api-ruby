@@ -46,17 +46,5 @@ module Droplr
       corrected_hash
     end
 
-    def type_coerced_header(object_key, field, value)
-      if Droplr::Configuration::INTEGER_FIELDS[object_key].include?(field)
-        Integer(value)
-      elsif Droplr::Configuration::BOOLEAN_FIELDS[object_key].include?(field)
-        value == "true"
-      elsif Droplr::Configuration::ENCODED_FIELDS[object_key].include?(field)
-        Base64.strict_decode64(value)
-      else
-        value
-      end
-    end
-
   end
 end

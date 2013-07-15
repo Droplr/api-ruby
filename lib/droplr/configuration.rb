@@ -16,27 +16,12 @@ module Droplr
     NOTES_ENDPOINT   = "/notes"
     FILES_ENDPOINT   = "/files"
 
+    API_VERSION = "0.9"
+
     # allowed values
-    EDIT_ACCOUNT_FIELDS = %w(password theme usedomain domain userootredirect rootredirect dropprivacy)
+    EDIT_ACCOUNT_FIELDS = %w(password theme useDomain domain useRootRedirect rootRedirect dropPrivacy)
     LIST_DROPS_PARAMS   = %w(offset amount type sortBy order since until search)
     NOTE_VARIANTS       = %w(markdown textile code plain)
-
-    # fields that need conversion in our parser when passed as a string
-    INTEGER_FIELDS = {
-      "account"  => %w(subscription_end max_upload_size extra_space used_space total_space drop_count created_at referrals),
-      "drop"     => %w(id created_at last_access size views),
-      "customer" => %w()
-    }
-    BOOLEAN_FIELDS = {
-      "account"  => %w(use_domain use_root_redirect),
-      "drop"     => %w(owner_is_pro),
-      "customer" => %w()
-    }
-    ENCODED_FIELDS = {
-      "account"  => %w(),
-      "drop"     => %w(title),
-      "customer" => %w()
-    }
 
     # json-formatted fields come back as camel-cased, but we want underscored.
     JSON_TO_UNDERSCORE_FIELDS = {
@@ -59,6 +44,7 @@ module Droplr
       "dropCount"                 => "drop_count",
       "maxUploadSize"             => "max_upload_size",
       "useRootRedirect"           => "use_root_redirect",
+      "rootRedirect"              => "root_redirect",
       "activeDrops"               => "active_drops"
     }
 
