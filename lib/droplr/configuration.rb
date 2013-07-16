@@ -16,8 +16,6 @@ module Droplr
     NOTES_ENDPOINT   = "/notes"
     FILES_ENDPOINT   = "/files"
 
-    API_VERSION = "0.9"
-
     # allowed values
     EDIT_ACCOUNT_FIELDS = %w(password theme useDomain domain useRootRedirect rootRedirect dropPrivacy)
     LIST_DROPS_PARAMS   = %w(offset amount type sortBy order since until search)

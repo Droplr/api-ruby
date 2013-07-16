@@ -3,6 +3,8 @@ module Droplr
 
     include Droplr::Authentication
 
+    DEFAULT_API_VERSION = "0.9"
+
     attr_accessor :configuration
 
     def initialize(configuration)
@@ -93,7 +95,7 @@ module Droplr
       # the request in order to find the date it should sign itself with
       {"Date"       => (Time.now.to_i * 1000).to_s,
        "User-Agent" => configuration.user_agent,
-       "Accept"     => "application/json; version=#{Droplr::Configuration::API_VERSION}"}
+       "Accept"     => "application/json; version=#{DEFAULT_API_VERSION}"}
     end
 
     def build_query_strings_for_options(url, options = nil)
