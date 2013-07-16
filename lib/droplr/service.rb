@@ -101,6 +101,7 @@ module Droplr
     def build_query_strings_for_options(url, options = nil)
       return url unless options && options.any?
       query_strings = options.map do |key, value|
+        next if value.nil?
         "#{CGI.escape(key.to_s)}=#{CGI.escape(value.to_s)}"
       end
 
