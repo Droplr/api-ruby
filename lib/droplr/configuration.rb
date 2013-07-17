@@ -35,6 +35,7 @@ module Droplr
       "customerId"                => "customer_id",
       "subscriptionWillAutoRenew" => "subscription_will_auto_renew",
       "dropPrivacy"               => "drop_privacy",
+      "ownerIsPro"                => "owner_is_pro",
       "extraSpace"                => "extra_space",
       "totalSpace"                => "total_space",
       "usedSpace"                 => "used_space",
