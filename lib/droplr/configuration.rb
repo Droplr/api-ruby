@@ -44,7 +44,8 @@ module Droplr
       "maxUploadSize"             => "max_upload_size",
       "useRootRedirect"           => "use_root_redirect",
       "rootRedirect"              => "root_redirect",
-      "activeDrops"               => "active_drops"
+      "activeDrops"               => "active_drops",
+      "referrerEmail"             => "referrer_email"
     }
 
     UNDERSCORE_TO_JSON_FIELDS = JSON_TO_UNDERSCORE_FIELDS.invert
