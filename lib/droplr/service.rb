@@ -3,6 +3,8 @@ module Droplr
 
     include Droplr::Authentication
 
+    DEFAULT_API_VERSION = "0.9"
+
     attr_accessor :configuration
 
     def initialize(configuration)
@@ -17,10 +19,9 @@ module Droplr
 
     def edit_account_details(account_options)
       url     = Droplr::Configuration::ACCOUNT_ENDPOINT
-      headers = base_headers.merge("Content-Type" => "")
+      headers = base_headers.merge("Content-Type" => "application/json")
 
-      account_options.each { |key, value| headers["x-droplr-#{key}"] = value.to_s }
-      execute_request(:put, url, nil, headers)
+      execute_request(:put, url, account_options.to_json, headers)
     end
 
     def read_drop(code)
@@ -30,7 +31,7 @@ module Droplr
     end
 
     def list_drops(drop_options)
-      url     = build_query_strings_for_options("#{Droplr::Configuration::DROPS_ENDPOINT}.json", drop_options)
+      url     = build_query_strings_for_options("#{Droplr::Configuration::DROPS_ENDPOINT}", drop_options)
       headers = base_headers.merge("Content-Type" => "application/json")
 
       execute_request(:get, url, nil, headers)
@@ -93,12 +94,14 @@ module Droplr
       # date header must be set first so our authentication_header method can introspect
       # the request in order to find the date it should sign itself with
       {"Date"       => (Time.now.to_i * 1000).to_s,
-       "User-Agent" => configuration.user_agent}
+       "User-Agent" => configuration.user_agent,
+       "Accept"     => "application/json; version=#{DEFAULT_API_VERSION}"}
     end
 
     def build_query_strings_for_options(url, options = nil)
       return url unless options && options.any?
       query_strings = options.map do |key, value|
+        next if value.nil?
         "#{CGI.escape(key.to_s)}=#{CGI.escape(value.to_s)}"
       end
 

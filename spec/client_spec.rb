@@ -54,6 +54,7 @@ describe "Client" do
     before(:each) do
       Droplr::Client.any_instance.stub(:check_client_configuration)
       Droplr::Client.any_instance.stub(:handle_json_response)
+      Droplr::Client.stub(:was_successful)
       Droplr::Client.any_instance.stub(:handle_header_response)
       Droplr::Configuration.stub(:new)
       Droplr::Service.stub(:new).and_return(service_double)

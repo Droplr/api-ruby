@@ -12,7 +12,7 @@ module Droplr
     def read_account_details
       response = service.read_account_details
 
-      handle_header_response(response, :account, Droplr::Configuration::READ_ACCOUNT_FIELDS)
+      handle_json_response(response, :account)
     end
 
     def edit_account_details(options = {})
@@ -21,12 +21,12 @@ module Droplr
       check_for_invalid_params(options, Droplr::Configuration::EDIT_ACCOUNT_FIELDS)
 
       response = service.edit_account_details(options)
-      handle_header_response(response, :account, Droplr::Configuration::READ_ACCOUNT_FIELDS)
+      handle_json_response(response, :account)
     end
 
     def list_drops(options = {})
-      options = camelized_params(options, :json)
-      check_for_invalid_params(options, Droplr::Configuration::LIST_DROPS_PARAMS, nil, :json)
+      options = camelized_params(options)
+      check_for_invalid_params(options, Droplr::Configuration::LIST_DROPS_PARAMS, nil)
 
       response = service.list_drops(options)
       handle_json_response(response, :drops)
@@ -36,7 +36,7 @@ module Droplr
       check_for_empty_params(code, "You must specify the drop you wish to read.")
 
       response = service.read_drop(code)
-      handle_header_response(response, :drop, Droplr::Configuration::READ_DROP_FIELDS)
+      handle_json_response(response, :drop)
     end
 
     def shorten_link(link = nil)
@@ -44,7 +44,7 @@ module Droplr
       check_for_valid_url(link)
 
       response = service.shorten_link(link)
-      handle_header_response(response, :drop, Droplr::Configuration::CREATE_DROP_FIELDS)
+      handle_json_response(response, :drop)
     end
 
     def create_note(contents = nil, options = {})
@@ -58,7 +58,7 @@ module Droplr
                                "If a note variant is specified, it must be one of: #{Droplr::Configuration::NOTE_VARIANTS.join(', ').downcase}")
 
       response = service.create_note(contents, options)
-      handle_header_response(response, :drop, Droplr::Configuration::CREATE_DROP_WITH_VARIANT_FIELDS)
+      handle_json_response(response, :drop)
     end
 
     def upload_file(contents = nil, options = {})
@@ -67,14 +67,14 @@ module Droplr
       check_for_empty_params(options[:content_type], "You must specify the content_type of a file to upload.")
 
       response = service.upload_file(contents, options)
-      handle_header_response(response, :drop, Droplr::Configuration::CREATE_DROP_WITH_VARIANT_FIELDS)
+      handle_json_response(response, :drop)
     end
 
     def delete_drop(code = nil)
       check_for_empty_params(code, "You must specify the drop you wish to delete.")
 
       response = service.delete_drop(code)
-      handle_header_response(response, :drop)
+      self.class.was_successful(response)
     end
 
     def self.was_successful(response)
@@ -83,14 +83,6 @@ module Droplr
     end
 
   private
-
-    def handle_header_response(response, object_type, allowed_headers = nil)
-      if Droplr::Client.was_successful(response)
-        Droplr::Parser.parse_success_headers(response, object_type, allowed_headers)
-      else
-        Droplr::Parser.parse_error_headers(response)
-      end
-    end
 
     def handle_json_response(response, object_type)
       if Droplr::Client.was_successful(response)
@@ -116,10 +108,8 @@ module Droplr
       end
     end
 
-    def check_for_invalid_params(params, allowed_params, message = nil, request_type = :headers)
-      coercion_hash = request_type == :headers ?
-                        Droplr::Configuration::UNDERSCORE_TO_HEADER_FIELDS :
-                        Droplr::Configuration::UNDERSCORE_TO_JSON_FIELDS
+    def check_for_invalid_params(params, allowed_params, message = nil)
+      coercion_hash = Droplr::Configuration::UNDERSCORE_TO_JSON_FIELDS
 
       params.each do |key, value|
         converted_key = coercion_hash[key.to_s] || key.to_s
@@ -144,11 +134,9 @@ module Droplr
       end
     end
 
-    def camelized_params(params, request_type = :headers)
+    def camelized_params(params)
       converted_params = {}
-      coercion_hash    = request_type == :headers ?
-                           Droplr::Configuration::UNDERSCORE_TO_HEADER_FIELDS :
-                           Droplr::Configuration::UNDERSCORE_TO_JSON_FIELDS
+      coercion_hash    = Droplr::Configuration::UNDERSCORE_TO_JSON_FIELDS
 
       params.each do |key, value|
         new_key                   = coercion_hash[key.to_s] || key
