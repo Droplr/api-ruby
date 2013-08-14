@@ -7,7 +7,7 @@ module Droplr
     DROPLR_PRODUCTION_SERVER_PORT = 443
     DROPLR_DEV_SERVER_PORT        = 8069
     DROPLR_PRODUCTION_SERVER_HOST = "api.droplr.com"
-    DROPLR_DEV_SERVER_HOST        = "sandbox2.droplr.com"
+    DROPLR_DEV_SERVER_HOST        = "sandbox.droplr.com"
 
     # endpoints
     ACCOUNT_ENDPOINT = "/account"
