@@ -38,12 +38,24 @@ module Droplr
   private
 
     def json_case_correct_object(element)
-      corrected_hash = {}
-      element.each do |key, value|
+      corrected_hash    = {}
+      flattened_element = flatten_nested_values(element)
+
+      flattened_element.each do |key, value|
         key = Droplr::Configuration::JSON_TO_UNDERSCORE_FIELDS[key] || key
         corrected_hash[key.to_sym] = value
       end
       corrected_hash
+    end
+
+    def flatten_nested_values(hash, base_object = {})
+      hash.each_with_object(base_object) do |(key, value), memo|
+        if value.is_a?(Hash)
+          memo.merge! flatten_nested_values(value, memo)
+        else
+          memo[key] = value
+        end
+      end
     end
 
   end
