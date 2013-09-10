@@ -45,7 +45,8 @@ module Droplr
       "useRootRedirect"           => "use_root_redirect",
       "rootRedirect"              => "root_redirect",
       "activeDrops"               => "active_drops",
-      "referrerEmail"             => "referrer_email"
+      "referrerEmail"             => "referrer_email",
+      "teamAdmin"                 => "team_admin"
     }
 
     UNDERSCORE_TO_JSON_FIELDS = JSON_TO_UNDERSCORE_FIELDS.invert
