@@ -25,6 +25,8 @@ module Droplr
       json_body[:error][:message]     = @message if @message
       json_body[:error][:error_code]  = @error_code if @error_code
       json_body[:error][:http_status] = @http_status if @http_status
+
+      json_body
     end
 
   end

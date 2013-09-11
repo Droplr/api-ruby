@@ -115,7 +115,7 @@ module Droplr
         converted_key = coercion_hash[key.to_s] || key.to_s
         unless allowed_params.include?(converted_key)
           message = message || "Invalid parameter supplied for request: #{converted_key}"
-          raise Droplr::UserError.new(message)
+          raise Droplr::UserError.new(message, nil, 400)
         end
       end
     end
@@ -123,14 +123,14 @@ module Droplr
     def check_for_empty_params(params, message = nil)
       if params.nil? || params.empty?
         message = message || "You must provide at least one option for this request."
-        raise Droplr::UserError.new(message)
+        raise Droplr::UserError.new(message, nil, 400)
       end
     end
 
     def check_for_valid_url(url)
       if (url =~ URI::regexp).nil?
         message = "The link you're trying to shorten appears to be invalid."
-        raise Droplr::UserError.new(message)
+        raise Droplr::UserError.new(message, nil, 400)
       end
     end
 
