@@ -47,7 +47,9 @@ module Droplr
       "activeDrops"               => "active_drops",
       "referrerEmail"             => "referrer_email",
       "teamAdmin"                 => "team_admin",
-      "useSubdomain"              => "use_subdomain"
+      "useSubdomain"              => "use_subdomain",
+      "teamName"                  => "team_name",
+      "useLogo"                   => "use_logo"
     }
 
     UNDERSCORE_TO_JSON_FIELDS = JSON_TO_UNDERSCORE_FIELDS.invert
