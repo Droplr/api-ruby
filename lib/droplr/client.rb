@@ -18,17 +18,19 @@ module Droplr
     def edit_account_details(options = {})
       options = camelized_params(options)
       check_for_empty_params(options, "You must provide at least one account field to update.")
-      check_for_invalid_params(options, Droplr::Configuration::EDIT_ACCOUNT_FIELDS)
 
+      options  = params_without_invalid_fields(options, Droplr::Configuration::EDIT_ACCOUNT_FIELDS)
       response = service.edit_account_details(options)
+
       handle_json_response(response, :account)
     end
 
     def list_drops(options = {})
       options = camelized_params(options)
-      check_for_invalid_params(options, Droplr::Configuration::LIST_DROPS_PARAMS, nil)
 
+      options  = params_without_invalid_fields(options, Droplr::Configuration::LIST_DROPS_PARAMS)
       response = service.list_drops(options)
+
       handle_json_response(response, :drops)
     end
 
@@ -106,6 +108,18 @@ module Droplr
         message = "Secret should be a hexidecimal SHA1 digest, and thus 40 characters."
         raise Droplr::ConfigurationError.new(message)
       end
+    end
+
+    def params_without_invalid_fields(params, allowed_params)
+      coercion_hash = Droplr::Configuration::UNDERSCORE_TO_JSON_FIELDS
+
+      allowed_params = params.select do |key, value|
+        converted_key = coercion_hash[key.to_s] || key.to_s
+
+        allowed_params.include?(converted_key)
+      end
+
+      allowed_params
     end
 
     def check_for_invalid_params(params, allowed_params, message = nil)
