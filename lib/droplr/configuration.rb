@@ -50,6 +50,7 @@ module Droplr
       "teamAdmin"                 => "team_admin",
       "useSubdomain"              => "use_subdomain",
       "teamName"                  => "team_name",
+      "teamId"                    => "team_id",
       "useLogo"                   => "use_logo"
     }
 
