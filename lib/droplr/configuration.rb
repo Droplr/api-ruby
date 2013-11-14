@@ -17,7 +17,7 @@ module Droplr
     FILES_ENDPOINT   = "/files"
 
     # allowed values
-    EDIT_ACCOUNT_FIELDS = %w(password theme useDomain domain useRootRedirect rootRedirect dropPrivacy)
+    EDIT_ACCOUNT_FIELDS = %w(password theme useDomain domain useRootRedirect rootRedirect dropPrivacy firstName lastName)
     LIST_DROPS_PARAMS   = %w(offset amount type sortBy order since until search)
     NOTE_VARIANTS       = %w(markdown textile code plain)
 
@@ -51,7 +51,9 @@ module Droplr
       "useSubdomain"              => "use_subdomain",
       "teamName"                  => "team_name",
       "teamId"                    => "team_id",
-      "useLogo"                   => "use_logo"
+      "useLogo"                   => "use_logo",
+      "firstName"                 => "first_name",
+      "lastName"                  => "last_name"
     }
 
     UNDERSCORE_TO_JSON_FIELDS = JSON_TO_UNDERSCORE_FIELDS.invert
