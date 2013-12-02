@@ -86,9 +86,9 @@ module Droplr
 
   private
 
-    def handle_json_response(response, object_type)
+    def handle_json_response(response, object_type, options = {})
       if Droplr::Client.was_successful(response)
-        Droplr::Parser.parse_success_json(response, object_type)
+        Droplr::Parser.parse_success_json(response, object_type, options)
       else
         Droplr::Parser.parse_error_headers(response)
       end

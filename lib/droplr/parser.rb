@@ -2,7 +2,8 @@ module Droplr
   module Parser
     extend self
 
-    def parse_success_json(response, object_key)
+    def parse_success_json(response, object_key, options = {})
+      options      = options.reverse_merge(:flatten => true)
       parsed_body  = response.body ? JSON.parse(response.body) : nil
       success_hash = {}
 
@@ -11,10 +12,10 @@ module Droplr
       # for which we need to parse all elements, other times a single hash.
       if parsed_body && parsed_body.is_a?(Array)
         corrected_response = parsed_body.map do |response_element|
-          json_case_correct_object(response_element)
+          json_case_correct_object(response_element, options[:flatten])
         end
       elsif parsed_body
-        corrected_response = json_case_correct_object(parsed_body)
+        corrected_response = json_case_correct_object(parsed_body, options[:flatten])
       end
 
       success_hash[object_key] = corrected_response ||= nil
@@ -37,11 +38,14 @@ module Droplr
 
   private
 
-    def json_case_correct_object(element)
-      corrected_hash    = {}
-      flattened_element = flatten_nested_values(element)
+    def json_case_correct_object(element, flatten)
+      corrected_hash = {}
 
-      flattened_element.each do |key, value|
+      if flatten
+        element = flatten_nested_values(element)
+      end
+
+      element.each do |key, value|
         key = Droplr::Configuration::JSON_TO_UNDERSCORE_FIELDS[key] || key
         corrected_hash[key.to_sym] = value
       end
