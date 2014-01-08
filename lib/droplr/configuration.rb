@@ -58,7 +58,8 @@ module Droplr
       "freeDropLimit"             => "free_drop_limit",
       "referrerCustomerId"        => "referrer_customer_id",
       "referrerReferralCount"     => "referrer_referral_count",
-      "referralCount"             => "referral_count"
+      "referralCount"             => "referral_count",
+      "referrerWasReferred"       => "referrer_was_referred"
     }
 
     UNDERSCORE_TO_JSON_FIELDS = JSON_TO_UNDERSCORE_FIELDS.invert
