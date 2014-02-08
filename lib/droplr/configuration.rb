@@ -31,6 +31,7 @@ module Droplr
       "previewThumb"              => "preview_thumb",
       "previewSmall"              => "preview_small",
       "previewMedium"             => "preview_medium",
+      "previewGallery"            => "preview_gallery",
       "subscriptionEnd"           => "subscription_end",
       "customerId"                => "customer_id",
       "subscriptionWillAutoRenew" => "subscription_will_auto_renew",
