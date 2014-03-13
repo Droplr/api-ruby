@@ -28,6 +28,7 @@ module Droplr
       "createdAt"                 => "created_at",
       "fileCreatedAt"             => "file_created_at",
       "lastAccess"                => "last_access",
+      "pixelDensity"              => "pixel_density",
       "previewThumb"              => "preview_thumb",
       "previewSmall"              => "preview_small",
       "previewMedium"             => "preview_medium",
