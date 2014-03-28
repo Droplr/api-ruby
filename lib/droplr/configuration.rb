@@ -60,7 +60,9 @@ module Droplr
       "referrerCustomerId"        => "referrer_customer_id",
       "referrerReferralCount"     => "referrer_referral_count",
       "referralCount"             => "referral_count",
-      "referrerWasReferred"       => "referrer_was_referred"
+      "referrerWasReferred"       => "referrer_was_referred",
+      "selfDestructTime"          => "self_destruct_time",
+      "selfDestructViews"         => "self_destruct_views"
     }
 
     UNDERSCORE_TO_JSON_FIELDS = JSON_TO_UNDERSCORE_FIELDS.invert
