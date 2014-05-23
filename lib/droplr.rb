@@ -2,7 +2,9 @@ require "droplr/version"
 require "droplr/authentication"
 require "droplr/configuration"
 require "droplr/client"
+require "droplr/auth_client"
 require "droplr/service"
+require "droplr/auth_service"
 require "droplr/parser"
 
 # error handling

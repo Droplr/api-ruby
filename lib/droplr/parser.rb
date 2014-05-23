@@ -35,6 +35,17 @@ module Droplr
       # raise an error that clients will be able to capture
       raise Droplr::UserError.new(message, error_code, http_status, additional_info)
     end
+    
+    def parse_auth_error_headers(response)
+      parsed_body     = response.body ? JSON.parse(response.body) : nil
+      http_status     = response.status
+      message         = "AuthError: #{parsed_body['name']}"
+      error_code      = parsed_body["statusCode"]
+
+      # raise an error that clients will be able to capture
+      raise Droplr::UserError.new(message, error_code, http_status)
+    end
+
 
   private
 

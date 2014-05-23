@@ -4,18 +4,26 @@ module Droplr
     attr_accessor :token, :secret, :use_production, :app_public_key, :app_private_key, :user_agent
 
     # basic client configuration
-    DROPLR_PRODUCTION_SERVER_PORT = 443
-    DROPLR_DEV_SERVER_PORT        = 8069
-    DROPLR_PRODUCTION_SERVER_HOST = "api.droplr.com"
-    DROPLR_DEV_SERVER_HOST        = "sandbox.droplr.com"
-
+    DROPLR_PRODUCTION_SERVER_PORT      = 443
+    DROPLR_DEV_SERVER_PORT             = 8069
+    DROPLR_PRODUCTION_SERVER_HOST      = "api.droplr.com"
+    DROPLR_DEV_SERVER_HOST             = "sandbox.droplr.com"
+    
+    # auth configuration
+    DROPLR_PRODUCTION_AUTH_SERVER_PORT = 443
+    DROPLR_DEV_AUTH_SERVER_PORT        = 80
+    DROPLR_PRODUCTION_AUTH_SERVER_HOST = "auth.droplr.com"
+    DROPLR_DEV_AUTH_SERVER_HOST        = "auth-sandbox.droplr.com"
+    
+    
     # endpoints
     ACCOUNT_ENDPOINT = "/account"
     DROPS_ENDPOINT   = "/drops"
     LINKS_ENDPOINT   = "/links"
     NOTES_ENDPOINT   = "/notes"
     FILES_ENDPOINT   = "/files"
-
+    AUTH_ENDPOINT    = "/api/userinfo"
+    
     # allowed values
     EDIT_ACCOUNT_FIELDS = %w(password theme useDomain domain useRootRedirect rootRedirect dropPrivacy firstName lastName useLogo logo)
     LIST_DROPS_PARAMS   = %w(offset amount type sortBy order since until search)
@@ -62,7 +70,7 @@ module Droplr
       "referralCount"             => "referral_count",
       "referrerWasReferred"       => "referrer_was_referred",
       "selfDestructTime"          => "self_destruct_time",
-      "selfDestructViews"         => "self_destruct_views"
+      "selfDestructViews"         => "self_destruct_views",
     }
 
     UNDERSCORE_TO_JSON_FIELDS = JSON_TO_UNDERSCORE_FIELDS.invert
@@ -86,6 +94,10 @@ module Droplr
     def base_url
       "#{protocol}://#{host}:#{port}/"
     end
+    
+    def auth_url
+      "#{auth_protocol}://#{auth_host}:#{auth_port}/"
+    end
 
   private
 
@@ -100,6 +112,19 @@ module Droplr
     def host
       use_production ? DROPLR_PRODUCTION_SERVER_HOST : DROPLR_DEV_SERVER_HOST
     end
+    
+    def auth_protocol
+      use_production ? "https" : "http"
+    end
 
+    def auth_port
+      use_production ? DROPLR_PRODUCTION_AUTH_SERVER_PORT : DROPLR_DEV_AUTH_SERVER_PORT
+    end
+
+    def auth_host
+      use_production ? DROPLR_PRODUCTION_AUTH_SERVER_HOST : DROPLR_DEV_AUTH_SERVER_HOST
+    end
+
+    
   end
 end
