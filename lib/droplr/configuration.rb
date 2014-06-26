@@ -11,7 +11,7 @@ module Droplr
     
     # auth configuration
     DROPLR_PRODUCTION_AUTH_SERVER_PORT = 443
-    DROPLR_DEV_AUTH_SERVER_PORT        = 80
+    DROPLR_DEV_AUTH_SERVER_PORT        = 443
     DROPLR_PRODUCTION_AUTH_SERVER_HOST = "auth.droplr.com"
     DROPLR_DEV_AUTH_SERVER_HOST        = "auth-sandbox.droplr.com"
     
