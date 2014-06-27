@@ -5,7 +5,7 @@ module Droplr
     
     def get_user_tokens(auth_token)
       url = "#{Droplr::Configuration::AUTH_ENDPOINT}/#{auth_token}"
-      logger.debug "#{url}"
+      logger.debug "AUTH URL: #{url}"
       execute_auth_request(:get, url, nil, base_headers)
     end    
         

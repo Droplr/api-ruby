@@ -10,8 +10,6 @@ module Droplr
     DROPLR_DEV_SERVER_HOST             = "sandbox.droplr.com"
     
     # auth configuration
-    DROPLR_PRODUCTION_AUTH_SERVER_PORT = 443
-    DROPLR_DEV_AUTH_SERVER_PORT        = 443
     DROPLR_PRODUCTION_AUTH_SERVER_HOST = "auth.droplr.com"
     DROPLR_DEV_AUTH_SERVER_HOST        = "auth-sandbox.droplr.com"
     
@@ -96,7 +94,7 @@ module Droplr
     end
     
     def auth_url
-      "#{auth_protocol}://#{auth_host}:#{auth_port}/"
+      "#{auth_protocol}://#{auth_host}/"
     end
 
   private
@@ -114,7 +112,7 @@ module Droplr
     end
     
     def auth_protocol
-      use_production ? "https" : "http"
+      "https"
     end
 
     def auth_port
