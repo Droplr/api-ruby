@@ -17,12 +17,16 @@ module Droplr
     
     #Helper methods for clients
     
-    def auth_login_url(callback_url)
-      "#{self.service.configuration.auth_url}login?callback=#{callback_url}"
+    def auth_login_url(callback_url, session_id=false)
+      url = "#{self.service.configuration.auth_url}login?callback=#{callback_url}"
+      url = "#{url}&session=#{session_id}" if session_id != false
+      url
     end
     
-    def auth_register_url(callback_url)
-      "#{self.service.configuration.auth_url}register?callback=#{callback_url}"
+    def auth_register_url(callback_url, session_id=false)
+      url = "#{self.service.configuration.auth_url}register?callback=#{callback_url}"
+      url = "#{url}&session=#{session_id}" if session_id != false
+      url
     end
     
     def self.was_successful(response)
