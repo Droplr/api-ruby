@@ -11,7 +11,6 @@ module Droplr
 
     def get_user_tokens(auth_token)
       response = service.get_user_tokens(auth_token)
-      logger.debug "REsponse: #{response.body} #{response.status}"
       handle_json_response(response, :account)
     end
     
@@ -37,7 +36,6 @@ module Droplr
   private
 
     def handle_json_response(response, object_type, options = {})
-      logger.debug "Response: #{response}"
       if Droplr::Client.was_successful(response)
         Droplr::Parser.parse_success_json(response, object_type, options)
       else
