@@ -4,7 +4,7 @@ module Droplr
 
     def parse_success_json(response, object_key, options = {})
       options      = options.reverse_merge(:flatten => true)
-      parsed_body  = response.body ? JSON.parse(response.body) : nil
+      parsed_body  = response.body ? JSON.parse(response.body) : nil rescue nil
       success_hash = {}
 
       # if we do have a body, we should go through and build each member of the object
