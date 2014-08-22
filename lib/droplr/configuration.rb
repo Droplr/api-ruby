@@ -48,6 +48,7 @@ module Droplr
       "totalSpace"                => "total_space",
       "usedSpace"                 => "used_space",
       "useDomain"                 => "use_domain",
+      "domainType"                => "domain_type",
       "dropCount"                 => "drop_count",
       "maxUploadSize"             => "max_upload_size",
       "useRootRedirect"           => "use_root_redirect",
