@@ -26,8 +26,6 @@ module Droplr
     end
 
     def list_drops(options = {})
-      options = camelized_params(options)
-
       options  = params_without_invalid_fields(options, Droplr::Configuration::LIST_DROPS_PARAMS)
       response = service.list_drops(options)
 
