@@ -8,12 +8,12 @@ module Droplr
     DROPLR_DEV_SERVER_PORT             = 8069
     DROPLR_PRODUCTION_SERVER_HOST      = "api.droplr.com"
     DROPLR_DEV_SERVER_HOST             = "sandbox.droplr.com"
-    
+
     # auth configuration
     DROPLR_PRODUCTION_AUTH_SERVER_HOST = "auth.droplr.com"
     DROPLR_DEV_AUTH_SERVER_HOST        = "auth-sandbox.droplr.com"
-    
-    
+
+
     # endpoints
     ACCOUNT_ENDPOINT = "/account"
     DROPS_ENDPOINT   = "/drops"
@@ -21,9 +21,9 @@ module Droplr
     NOTES_ENDPOINT   = "/notes"
     FILES_ENDPOINT   = "/files"
     AUTH_ENDPOINT    = "/api/userinfo"
-    
+
     # allowed values
-    EDIT_ACCOUNT_FIELDS = %w(password theme useDomain domain useRootRedirect rootRedirect dropPrivacy firstName lastName useLogo logo)
+    EDIT_ACCOUNT_FIELDS = %w(password theme useDomain domain useRootRedirect rootRedirect dropPrivacy firstName lastName useLogo logo selfDestructType selfDestructValue)
     LIST_DROPS_PARAMS   = %w(offset amount type sortBy order since until search)
     NOTE_VARIANTS       = %w(markdown textile code plain)
 
@@ -68,8 +68,8 @@ module Droplr
       "referrerReferralCount"     => "referrer_referral_count",
       "referralCount"             => "referral_count",
       "referrerWasReferred"       => "referrer_was_referred",
-      "selfDestructTime"          => "self_destruct_time",
-      "selfDestructViews"         => "self_destruct_views",
+      "selfDestructType"          => "self_destruct_type",
+      "selfDestructValue"         => "self_destruct_value"
     }
 
     UNDERSCORE_TO_JSON_FIELDS = JSON_TO_UNDERSCORE_FIELDS.invert
@@ -93,7 +93,7 @@ module Droplr
     def base_url
       "#{protocol}://#{host}:#{port}/"
     end
-    
+
     def auth_url
       "#{auth_protocol}://#{auth_host}/"
     end
@@ -111,7 +111,7 @@ module Droplr
     def host
       use_production ? DROPLR_PRODUCTION_SERVER_HOST : DROPLR_DEV_SERVER_HOST
     end
-    
+
     def auth_protocol
       "https"
     end
@@ -124,6 +124,6 @@ module Droplr
       use_production ? DROPLR_PRODUCTION_AUTH_SERVER_HOST : DROPLR_DEV_AUTH_SERVER_HOST
     end
 
-    
+
   end
 end
