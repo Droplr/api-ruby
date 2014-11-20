@@ -23,7 +23,7 @@ module Droplr
     AUTH_ENDPOINT    = "/api/userinfo"
 
     # allowed values
-    EDIT_ACCOUNT_FIELDS = %w(password theme useDomain domain useRootRedirect rootRedirect dropPrivacy firstName lastName useLogo logo selfDestructType selfDestructValue)
+    EDIT_ACCOUNT_FIELDS = %w(password theme useDomain domain useRootRedirect rootRedirect dropPrivacy firstName lastName useLogo logo selfDestructType selfDestructValue type)
     LIST_DROPS_PARAMS   = %w(offset amount type sortBy order since until search)
     NOTE_VARIANTS       = %w(markdown textile code plain)
 
@@ -69,7 +69,8 @@ module Droplr
       "referralCount"             => "referral_count",
       "referrerWasReferred"       => "referrer_was_referred",
       "selfDestructType"          => "self_destruct_type",
-      "selfDestructValue"         => "self_destruct_value"
+      "selfDestructValue"         => "self_destruct_value",
+      "type"                      => "type"
     }
 
     UNDERSCORE_TO_JSON_FIELDS = JSON_TO_UNDERSCORE_FIELDS.invert
