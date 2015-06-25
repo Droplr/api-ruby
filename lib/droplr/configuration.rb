@@ -23,7 +23,7 @@ module Droplr
     AUTH_ENDPOINT    = "/api/userinfo"
 
     # allowed values
-    EDIT_ACCOUNT_FIELDS = %w(password theme useDomain domain useRootRedirect rootRedirect dropPrivacy firstName lastName useLogo logo selfDestructType selfDestructValue)
+    EDIT_ACCOUNT_FIELDS = %w(password theme useDomain domain useRootRedirect rootRedirect dropPrivacy firstName lastName useLogo logo selfDestructType selfDestructValue verified)
     LIST_DROPS_PARAMS   = %w(offset amount type sortBy order since until search)
     NOTE_VARIANTS       = %w(markdown textile code plain)
 
