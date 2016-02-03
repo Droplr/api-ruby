@@ -17,7 +17,6 @@ module Droplr
 
     def execute_auth_request(method, url, body, headers)
       headers["Authorization"] ||= anonymous_authentication_header(authentication_params(method, url, headers))
-      logger.debug "HEADERS: #{headers} URL: #{url} BODY: #{body} METHOD: #{method}"
       begin
         base_auth_request.run_request(method, url, body, headers)
       rescue Faraday::Error::ClientError
