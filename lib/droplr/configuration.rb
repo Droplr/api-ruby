@@ -5,9 +5,9 @@ module Droplr
 
     # basic client configuration
     DROPLR_PRODUCTION_SERVER_PORT      = 443
-    DROPLR_DEV_SERVER_PORT             = 8069
+    DROPLR_DEV_SERVER_PORT             = 80
     DROPLR_PRODUCTION_SERVER_HOST      = "api.droplr.com"
-    DROPLR_DEV_SERVER_HOST             = "sandbox.droplr.com"
+    DROPLR_DEV_SERVER_HOST             = "api.sandbox.droplr.com"
 
     # auth configuration
     DROPLR_PRODUCTION_AUTH_SERVER_HOST = "auth.droplr.com"
