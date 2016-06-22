@@ -20,6 +20,7 @@ module Droplr
     LINKS_ENDPOINT   = "/links"
     NOTES_ENDPOINT   = "/notes"
     FILES_ENDPOINT   = "/files"
+    TEAMS_ENDPOINT   = "/teams"
     AUTH_ENDPOINT    = "/api/userinfo"
 
     # allowed values

@@ -90,6 +90,19 @@ describe "Client" do
 
     end
 
+    context "#read_team" do
+
+      it "throw an error if no parameters are given" do
+        lambda { api_client.read_team }.should raise_error(Droplr::UserError)
+      end
+
+      it "allows reading a team" do
+        service_double.should_receive(:read_team).with("12345")
+        api_client.read_team("12345")
+      end
+
+    end
+
     context "#read_drop" do
 
       it "throw an error if no parameters are given" do

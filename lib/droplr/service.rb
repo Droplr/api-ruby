@@ -24,6 +24,12 @@ module Droplr
       execute_request(:put, url, account_options.to_json, headers)
     end
 
+    def read_team(code)
+      url = "#{Droplr::Configuration::TEAMS_ENDPOINT}/#{code}"
+
+      execute_request(:get, url, nil, base_headers)
+    end
+
     def read_drop(code)
       url = "#{Droplr::Configuration::DROPS_ENDPOINT}/#{code}"
 
