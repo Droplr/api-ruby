@@ -27,7 +27,7 @@ module Droplr
     def read_team(code)
       url = "#{Droplr::Configuration::TEAMS_ENDPOINT}/#{code}"
 
-      execute_request(:get, url, nil, base_headers)
+      execute_request(:get, url, nil, base_headers, true)
     end
 
     def read_drop(code)
@@ -78,8 +78,8 @@ module Droplr
 
   private
 
-    def execute_request(method, url, body, headers)
-      headers["Authorization"] ||= authentication_header(authentication_params(method, url, headers))
+    def execute_request(method, url, body, headers, is_anon=false)
+      headers["Authorization"] ||= authentication_header(authentication_params(method, url, headers, is_anon))
 
       begin
         base_request.run_request(method, url, body, headers)
@@ -89,11 +89,12 @@ module Droplr
       end
     end
 
-    def authentication_params(method, url, headers)
+    def authentication_params(method, url, headers, is_anon=false)
       {:method       => method.to_s,
        :path         => url.match(/[\w\/\.]*/)[0], # avoid matching the query params
        :date         => headers["Date"],
-       :content_type => headers["Content-Type"] || ""}
+       :content_type => headers["Content-Type"] || "",
+       :request_type => is_anon ? "droplranon" : "droplr"}
     end
 
     def base_headers
