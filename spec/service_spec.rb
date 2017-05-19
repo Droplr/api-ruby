@@ -57,6 +57,18 @@ describe "Service" do
 
   end
 
+  context "#read_team" do
+
+    it "builds a request correctly" do
+      team_code            = "1234"
+      expected_auth_string = "droplr c29tZV9wdWJsaWNfa2V5OnRlc3RfdG9rZW4=:mcOnyGd0KX4WepGt5anssM94SfE="
+      faraday_stub.should_receive(:run_request).with(:get, "/teams/#{team_code}", nil, hash_including("Authorization" => expected_auth_string))
+
+      api_client.service.read_team(team_code)
+    end
+
+  end
+
   context "#read_drop" do
 
     it "builds a request and authentication header correctly" do

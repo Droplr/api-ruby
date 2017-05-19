@@ -1,7 +1,7 @@
 module Droplr
   class Configuration
 
-    attr_accessor :token, :secret, :use_production, :app_public_key, :app_private_key, :user_agent
+    attr_accessor :token, :secret, :use_production, :app_public_key, :app_private_key, :user_agent, :host, :port, :protocol, :auth_host, :auth_port, :auth_protocol
 
     # basic client configuration
     DROPLR_PRODUCTION_SERVER_PORT      = 443
@@ -20,6 +20,7 @@ module Droplr
     LINKS_ENDPOINT   = "/links"
     NOTES_ENDPOINT   = "/notes"
     FILES_ENDPOINT   = "/files"
+    TEAMS_ENDPOINT   = "/teams"
     AUTH_ENDPOINT    = "/api/userinfo"
 
     # allowed values
@@ -96,33 +97,57 @@ module Droplr
     end
 
     def auth_url
-      "#{auth_protocol}://#{auth_host}/"
+      "#{auth_protocol}://#{auth_host}:#{auth_port}/"
     end
 
   private
 
+    def protocol=(value)
+      @protocol = value
+    end
+
     def protocol
-      use_production ? "https" : "http"
+      @protocol ||= @protocol.nil? ? @protocol : (use_production ? "https" : "http")
+    end
+
+    def port=(value)
+      @port = value
     end
 
     def port
-      use_production ? DROPLR_PRODUCTION_SERVER_PORT : DROPLR_DEV_SERVER_PORT
+      @port ||= @port.nil? ? @port : (use_production ? DROPLR_PRODUCTION_SERVER_PORT : DROPLR_DEV_SERVER_PORT)
+    end
+
+    def host=(value)
+      @host = value
     end
 
     def host
-      use_production ? DROPLR_PRODUCTION_SERVER_HOST : DROPLR_DEV_SERVER_HOST
+      @host ||= @host.nil? ? @host : (use_production ? DROPLR_PRODUCTION_SERVER_HOST : DROPLR_DEV_SERVER_HOST)
+    end
+
+    def auth_protocol=(value)
+      @auth_protocol = value
     end
 
     def auth_protocol
-      "https"
+      @auth_protocol ? @auth_protocol : "https"
+    end
+
+    def auth_port=(value)
+      @auth_port = value
     end
 
     def auth_port
-      use_production ? DROPLR_PRODUCTION_AUTH_SERVER_PORT : DROPLR_DEV_AUTH_SERVER_PORT
+      @auth_port ? @auth_port : (use_production ? DROPLR_PRODUCTION_AUTH_SERVER_PORT : DROPLR_DEV_AUTH_SERVER_PORT)
+    end
+
+    def auth_host=(value)
+      @auth_host = value
     end
 
     def auth_host
-      use_production ? DROPLR_PRODUCTION_AUTH_SERVER_HOST : DROPLR_DEV_AUTH_SERVER_HOST
+      @auth_host ? @auth_host : (use_production ? DROPLR_PRODUCTION_AUTH_SERVER_HOST : DROPLR_DEV_AUTH_SERVER_HOST)
     end
 
 

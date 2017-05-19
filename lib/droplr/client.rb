@@ -25,6 +25,13 @@ module Droplr
       handle_json_response(response, :account)
     end
 
+    def read_team(code = nil)
+      check_for_empty_params(code, "You must specify the team you wish to read.")
+
+      response = service.read_team(code)
+      handle_json_response(response, :team)
+    end
+
     def list_drops(options = {})
       options  = params_without_invalid_fields(options, Droplr::Configuration::LIST_DROPS_PARAMS)
       response = service.list_drops(options)
