@@ -36,11 +36,11 @@ module Droplr
       execute_request(:get, url, nil, base_headers)
     end
 
-    def list_drops(drop_options)
+    def list_drops(drop_options, allow_anon)
       url     = build_query_strings_for_options("#{Droplr::Configuration::DROPS_ENDPOINT}", drop_options)
       headers = base_headers.merge("Content-Type" => "application/json")
 
-      execute_request(:get, url, nil, headers)
+      execute_request(:get, url, nil, headers, allow_anon)
     end
 
     def shorten_link(link)

@@ -32,9 +32,9 @@ module Droplr
       handle_json_response(response, :team)
     end
 
-    def list_drops(options = {})
-      options  = params_without_invalid_fields(options, Droplr::Configuration::LIST_DROPS_PARAMS)
-      response = service.list_drops(options)
+    def list_drops(drop_options = {}, allow_anon)
+      drop_options  = params_without_invalid_fields(drop_options, Droplr::Configuration::LIST_DROPS_PARAMS)
+      response = service.list_drops(drop_options, allow_anon)
 
       handle_json_response(response, :drops)
     end
