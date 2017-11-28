@@ -71,7 +71,8 @@ module Droplr
       "referralCount"             => "referral_count",
       "referrerWasReferred"       => "referrer_was_referred",
       "selfDestructType"          => "self_destruct_type",
-      "selfDestructValue"         => "self_destruct_value"
+      "selfDestructValue"         => "self_destruct_value",
+      "isOwnerPro"                => "is_owner_pro"
     }
 
     UNDERSCORE_TO_JSON_FIELDS = JSON_TO_UNDERSCORE_FIELDS.invert
