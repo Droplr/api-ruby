@@ -91,7 +91,7 @@ module Droplr
 
     def authentication_params(method, url, headers, is_anon=false)
       {:method       => method.to_s,
-       :path         => url.match(/[\w\/\.]*/)[0], # avoid matching the query params
+       :path         => url.match(/[\w\/\.\-]*/)[0], # avoid matching the query params
        :date         => headers["Date"],
        :content_type => headers["Content-Type"] || "",
        :request_type => is_anon ? "droplranon" : "droplr"}
